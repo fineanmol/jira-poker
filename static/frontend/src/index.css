@@ -1,0 +1,28 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  /*
+   * Use min-height instead of height so the content can grow beyond
+   * the iframe's initial height. With height: 100%, the tree collapses
+   * to whatever the Forge host sets as the initial iframe height (~40px).
+   */
+  min-height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial,
+    sans-serif;
+  background: #ffffff;
+  color: #172b4d;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

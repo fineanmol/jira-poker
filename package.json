@@ -1,0 +1,21 @@
+{
+  "name": "agile-effort-estimation",
+  "version": "1.0.0",
+  "description": "Planning Poker estimation tool for Jira Cloud — Atlassian Forge app",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "deploy": "forge deploy",
+    "tunnel": "forge tunnel",
+    "install:all": "npm install && npm install --prefix static/frontend",
+    "build:frontend": "npm run build --prefix static/frontend"
+  },
+  "devDependencies": {
+    "@forge/cli": "^12.15.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@forge/api": "^7.1.0",
+    "@forge/resolver": "^1.7.1"
+  }
+}
