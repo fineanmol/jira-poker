@@ -42,7 +42,7 @@
       z-index: 10;
       box-shadow: var(--shadow);
     }
-    .nav-logo { font-size: 20px; }
+    .nav-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; }
     .nav-title { font-weight: 700; font-size: 15px; color: var(--text); }
     .nav-badge {
       font-size: 11px;
@@ -68,7 +68,7 @@
       padding: 64px 24px;
       text-align: center;
     }
-    .hero-icon { font-size: 48px; margin-bottom: 16px; }
+    .hero-icon { width: 96px; height: 96px; margin: 0 auto 16px; display: block; border-radius: 16px; }
     .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
     .hero p { font-size: 16px; opacity: .88; max-width: 520px; margin: 0 auto 24px; }
     .hero-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
@@ -314,7 +314,7 @@
 
 <!-- Navigation -->
 <nav>
-  <span class="nav-logo">&#9824;</span>
+  <img class="nav-logo" src="app-icon.png" alt="Planning Poker for Jira" />
   <span class="nav-title">Planning Poker for Jira</span>
   <span class="nav-badge">Atlassian Forge</span>
   <a class="nav-link" href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">View on GitHub ↗</a>
@@ -322,7 +322,7 @@
 
 <!-- Hero -->
 <div class="hero">
-  <div class="hero-icon">&#9824;</div>
+  <img class="hero-icon" src="app-icon.png" alt="Planning Poker for Jira" />
   <h1>Planning Poker for Jira</h1>
   <p>Run agile story point estimation sessions directly inside your Jira issues — no external tools needed.</p>
   <div class="hero-badges">
