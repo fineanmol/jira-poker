@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planning Poker for Jira — Documentation</title>
+  <style>
+    :root {
+      --blue: #0C66E4;
+      --blue-dark: #0055CC;
+      --blue-subtle: #E9F2FF;
+      --text: #172B4D;
+      --text-sub: #44546F;
+      --text-muted: #626F86;
+      --border: #DCDFE4;
+      --bg: #F7F8F9;
+      --white: #FFFFFF;
+      --green: #1F845A;
+      --green-bg: #DCFFF1;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(9,30,66,.12), 0 0 1px rgba(9,30,66,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: var(--shadow);
+    }
+    .nav-logo { font-size: 20px; }
+    .nav-title { font-weight: 700; font-size: 15px; color: var(--text); }
+    .nav-badge {
+      font-size: 11px;
+      background: var(--blue-subtle);
+      color: var(--blue);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-weight: 600;
+    }
+    .nav-link {
+      margin-left: auto;
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--blue) 0%, #0747A6 100%);
+      color: white;
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .hero-icon { font-size: 48px; margin-bottom: 16px; }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: .88; max-width: 520px; margin: 0 auto 24px; }
+    .hero-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .badge {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 72px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .sidebar h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 5px 8px;
+      border-radius: 4px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background .15s;
+    }
+    .sidebar a:hover { background: var(--blue-subtle); color: var(--blue); }
+
+    /* ── Sections ── */
+    .section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 20px 0 8px;
+    }
+    .section p { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* ── Steps ── */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .step-num {
+      counter-increment: step;
+      min-width: 32px;
+      height: 32px;
+      background: var(--blue);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .step-num::before { content: counter(step); }
+    .step-body h3 { margin-top: 4px; }
+
+    /* ── Screenshot placeholder ── */
+    .screenshot {
+      background: var(--bg);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .screenshot-label {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .screen-mock {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+    .screen-mock-header {
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .feature-card .icon { font-size: 20px; margin-bottom: 6px; }
+    .feature-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .feature-card p { font-size: 12px; color: var(--text-sub); margin: 0; }
+
+    /* ── Table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    th {
+      text-align: left;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text-sub); }
+    tr:hover td { background: var(--bg); }
+
+    /* ── Code ── */
+    code {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #AE2E24;
+    }
+
+    /* ── Callout ── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: 13px;
+      display: flex;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .callout--info { background: var(--blue-subtle); border-left: 4px solid var(--blue); }
+    .callout--success { background: var(--green-bg); border-left: 4px solid var(--green); }
+    .callout--warn { background: #FFF7D6; border-left: 4px solid #F5CD47; }
+    .callout p { margin: 0; color: var(--text); }
+
+    /* ── FAQ ── */
+    details {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    summary {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      background: var(--bg);
+      user-select: none;
+    }
+    summary:hover { background: var(--blue-subtle); }
+    details[open] summary { border-bottom: 1px solid var(--border); }
+    details p { padding: 12px 16px; font-size: 13px; color: var(--text-sub); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <span class="nav-logo">&#9824;</span>
+  <span class="nav-title">Planning Poker for Jira</span>
+  <span class="nav-badge">Atlassian Forge</span>
+  <a class="nav-link" href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">View on GitHub ↗</a>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-icon">&#9824;</div>
+  <h1>Planning Poker for Jira</h1>
+  <p>Run agile story point estimation sessions directly inside your Jira issues — no external tools needed.</p>
+  <div class="hero-badges">
+    <span class="badge">Jira Cloud</span>
+    <span class="badge">Atlassian Forge</span>
+    <span class="badge">Free up to 20 users</span>
+    <span class="badge">No external servers</span>
+  </div>
+</div>
+
+<!-- Main layout -->
+<div class="layout">
+
+  <!-- Sidebar TOC -->
+  <aside class="sidebar">
+    <h3>On this page</h3>
+    <a href="#overview">Overview</a>
+    <a href="#features">Features</a>
+    <a href="#setup">Setup Guide</a>
+    <a href="#usage">How to Use</a>
+    <a href="#decks">Voting Decks</a>
+    <a href="#story-points">Story Points</a>
+    <a href="#permissions">Permissions</a>
+    <a href="#faq">FAQ</a>
+    <a href="#support">Support</a>
+  </aside>
+
+  <!-- Content -->
+  <main>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2>&#128640; Overview</h2>
+      <p>
+        <strong>Planning Poker for Jira</strong> is a free Atlassian Forge app that brings story point
+        estimation directly into your Jira issues. Your team votes on effort using playing card values,
+        the facilitator reveals votes, and the agreed story points are saved to the issue — all without
+        leaving Jira.
+      </p>
+      <p>
+        The app is built entirely on the <strong>Atlassian Forge</strong> platform. No external servers,
+        no data leaves Atlassian's infrastructure, and no additional accounts are required.
+      </p>
+      <div class="callout callout--success">
+        <span>&#10003;</span>
+        <p><strong>Free for teams up to 20 participants per session.</strong> No credit card required.</p>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <h2>&#10024; Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon">&#9824;</div>
+          <h4>Multiple Card Decks</h4>
+          <p>Fibonacci, T-shirt sizes (XS–XXL), Powers of 2, and Sequential decks.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128065;</div>
+          <h4>Hidden Votes</h4>
+          <p>Votes stay hidden until the facilitator clicks Reveal, preventing anchoring bias.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128101;</div>
+          <h4>Participant Tracking</h4>
+          <p>See exactly who has voted and who hasn't in real time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128276;</div>
+          <h4>Nudge Non-voters</h4>
+          <p>Send a Jira comment @mention to remind teammates who haven't voted yet.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#9889;</div>
+          <h4>Auto-Reveal</h4>
+          <p>Automatically reveal votes the moment everyone has cast their card.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128204;</div>
+          <h4>One-click Story Points</h4>
+          <p>Save the consensus estimate directly to the Jira Story Points field.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128202;</div>
+          <h4>Results Summary</h4>
+          <p>Average, median, consensus score, and a vote distribution chart.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128274;</div>
+          <h4>Moderator Controls</h4>
+          <p>Reveal, reset rounds, change decks, and end sessions — moderator only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Setup Guide -->
+    <section class="section" id="setup">
+      <h2>&#128295; Setup Guide</h2>
+      <p>Follow these steps to install and configure Planning Poker for Jira on your Jira Cloud site.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Install from the Atlassian Marketplace</h3>
+            <p>
+              Go to <strong>Jira → Apps → Explore more apps</strong> and search for
+              <strong>"Planning Poker for Jira"</strong>. Click <strong>Get app</strong> and
+              follow the prompts. You must be a <strong>Jira site administrator</strong> to install apps.
+            </p>
+            <div class="screenshot-label">
+              &#128247; <span><strong>Where to find it:</strong> Jira top navigation → Apps (9-dot grid) → Explore more apps → search "Planning Poker for Jira"</span>
+            </div>
+            <div class="callout callout--info">
+              <span>&#8505;</span>
+              <p>The app requires the <code>read:jira-work</code>, <code>write:jira-work</code>, and <code>read:jira-user</code> scopes. These are shown during installation and allow the app to read issue data, update story points, and display participant names.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Enable the Story Points field (if not already active)</h3>
+            <p>
+              The app writes directly to Jira's Story Points field. If your project doesn't show
+              story points, you need to add the field to the issue screen.
+            </p>
+            <p><strong>For Company-managed (classic) projects:</strong></p>
+            <p>
+              Go to <strong>Jira Settings → Issues → Screens</strong>, find the screen used by your
+              project, and add the <strong>Story Points</strong> field (or <strong>Story point estimate</strong>).
+            </p>
+            <p><strong>For Team-managed (next-gen) projects:</strong></p>
+            <p>
+              Open a project issue → click the <strong>+</strong> icon in the right panel → add
+              <strong>Story points</strong>.
+            </p>
+            <div class="callout callout--warn">
+              <span>&#9888;</span>
+              <p>If you try to set story points on a project where the field hasn't been added to the screen, you'll see: <em>"This issue type does not support story points."</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Open a Jira issue to start using the app</h3>
+            <p>
+              Once installed, open any Jira issue. You will see two entry points:
+            </p>
+            <table>
+              <thead>
+                <tr><th>Entry Point</th><th>Location</th><th>Best For</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Estimate Story Points</strong> (sidebar)</td>
+                  <td>Right-hand sidebar of any issue</td>
+                  <td>Quick access while browsing issues</td>
+                </tr>
+                <tr>
+                  <td><strong>Agile Effort Estimation</strong> (panel)</td>
+                  <td>Bottom panel (above Activity)</td>
+                  <td>Full-width estimation view</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="callout callout--info">
+              <span>&#8505;</span>
+              <p>Both entry points share the same session data — you can use either one interchangeably.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guide -->
+    <section class="section" id="usage">
+      <h2>&#127918; How to Run a Planning Poker Session</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Start a session (Moderator)</h3>
+            <p>
+              Open a Jira issue and click <strong>&#9654; Start Session</strong>.
+              You become the <strong>moderator</strong> of this session — only you can reveal votes,
+              reset rounds, change the deck, and end the session.
+            </p>
+            <div class="screen-mock">
+              <div class="screen-mock-header">App appearance — no active session</div>
+              <p style="color:#44546F;font-size:13px;">&#128203; Ready to estimate?<br>Start a Planning Poker session for this issue so your team can vote on effort without leaving Jira.</p>
+              <p style="margin-top:8px;"><span style="background:#0C66E4;color:white;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;">&#9654; Start Session</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Team members join and vote</h3>
+            <p>
+              Team members open the <strong>same Jira issue</strong> and are automatically added
+              to the session. Each person selects a card from the voting deck.
+            </p>
+            <p>
+              Votes are <strong>hidden</strong> until the facilitator reveals them — this prevents
+              anchoring, where people change their vote to match others.
+            </p>
+            <div class="screen-mock">
+              <div class="screen-mock-header">Voting cards (Fibonacci deck)</div>
+              <p style="font-size:12px;color:#44546F;">Click a card to cast your vote:</p>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+                <span style="border:2px solid #0C66E4;background:#E9F2FF;color:#0C66E4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;">1</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">2</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">3</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">5</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">8</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">13</span>
+                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Monitor who has voted (Team panel)</h3>
+            <p>
+              The <strong>Team</strong> section shows every participant with a green checkmark
+              (voted) or grey waiting indicator (not yet voted). The progress bar updates in real time.
+            </p>
+            <p>
+              As the moderator, you can click the <strong>&#128276; Nudge</strong> button next to
+              any participant who hasn't voted — this posts a Jira comment @mentioning them.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Reveal votes (Moderator)</h3>
+            <p>
+              Click <strong>&#128065; Reveal Votes</strong> to show all votes simultaneously.
+              The Results section displays:
+            </p>
+            <ul style="font-size:13px;color:#44546F;padding-left:20px;margin:8px 0;">
+              <li>A vote distribution bar chart</li>
+              <li><strong>Average</strong> — mean of all numeric votes</li>
+              <li><strong>Median</strong> — middle value</li>
+              <li><strong>Consensus</strong> — the most common vote (highlighted)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Set Story Points or start a new round</h3>
+            <p>
+              Click <span style="background:#0C66E4;color:white;padding:2px 8px;border-radius:3px;font-size:12px;">&#128204; Set Story Points → X SP</span>
+              to write the consensus value directly to the Jira issue's Story Points field.
+            </p>
+            <p>
+              If the team disagrees and needs another round, click <strong>&#128260; New Round</strong>
+              to reset votes and vote again.
+            </p>
+            <div class="callout callout--success">
+              <span>&#10003;</span>
+              <p>Once story points are saved, a green confirmation appears and the button is disabled to prevent accidental double-saves.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Voting Decks -->
+    <section class="section" id="decks">
+      <h2>&#127183; Voting Decks</h2>
+      <p>The moderator can change the deck at any time by clicking the deck badge in the session header.</p>
+      <table>
+        <thead>
+          <tr><th>Deck</th><th>Values</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Fibonacci</strong> (default)</td>
+            <td><code>0 1 2 3 5 8 13 21 34 ? &#9749;</code></td>
+            <td>Most teams — reflects natural uncertainty at larger sizes</td>
+          </tr>
+          <tr>
+            <td><strong>T-shirt Sizes</strong></td>
+            <td><code>XS S M L XL XXL</code></td>
+            <td>Teams new to estimation; maps to numeric points automatically</td>
+          </tr>
+          <tr>
+            <td><strong>Powers of 2</strong></td>
+            <td><code>1 2 4 8 16 32 64</code></td>
+            <td>Technical teams who think in doubling increments</td>
+          </tr>
+          <tr>
+            <td><strong>Sequential</strong></td>
+            <td><code>1 2 3 4 5 6 7 8 9 10</code></td>
+            <td>Simple linear scale for straightforward tasks</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout callout--info">
+        <span>&#8505;</span>
+        <p>When using the T-shirt deck, <strong>Set Story Points</strong> automatically converts the winning size to a numeric value: XS=1, S=2, M=3, L=5, XL=8, XXL=13.</p>
+      </div>
+    </section>
+
+    <!-- Story Points -->
+    <section class="section" id="story-points">
+      <h2>&#128204; Story Points Configuration</h2>
+      <p>
+        The app tries two common Jira field IDs for Story Points automatically — no configuration needed
+        for most projects:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Project Type</th><th>Field ID Used</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Team-managed (next-gen)</td>
+            <td><code>story_points</code></td>
+          </tr>
+          <tr>
+            <td>Company-managed (classic)</td>
+            <td><code>customfield_10016</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The app tries <code>story_points</code> first, then falls back to <code>customfield_10016</code>. If both fail, it means the Story Points field hasn't been added to your project's screen scheme — see <a href="#setup">Setup Step 2</a>.</p>
+    </section>
+
+    <!-- Permissions -->
+    <section class="section" id="permissions">
+      <h2>&#128274; Permissions &amp; Data</h2>
+      <table>
+        <thead>
+          <tr><th>Permission</th><th>Why it's needed</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>read:jira-work</code></td>
+            <td>Read issue ID and key to display in the session header</td>
+          </tr>
+          <tr>
+            <td><code>write:jira-work</code></td>
+            <td>Update the Story Points field and post @mention comments when nudging</td>
+          </tr>
+          <tr>
+            <td><code>read:jira-user</code></td>
+            <td>Fetch participant display names to show in the Team section</td>
+          </tr>
+          <tr>
+            <td><code>storage:app</code></td>
+            <td>Store session data (votes, participants) in Forge's encrypted key-value store</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout callout--success">
+        <span>&#128274;</span>
+        <p><strong>Privacy:</strong> No data is sent to external servers. All session data lives in Atlassian's Forge Storage and is automatically deleted when the session is ended.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <h2>&#10067; Frequently Asked Questions</h2>
+
+      <details open>
+        <summary>Who becomes the moderator?</summary>
+        <p>The first person to click <strong>Start Session</strong> on a Jira issue becomes the moderator. Only the moderator can reveal votes, reset rounds, change the deck, and end the session.</p>
+      </details>
+
+      <details>
+        <summary>Can multiple people start sessions on different issues simultaneously?</summary>
+        <p>Yes — sessions are independent per Jira issue. Each issue has its own separate session state.</p>
+      </details>
+
+      <details>
+        <summary>What happens if the moderator leaves?</summary>
+        <p>The session continues and other participants can still vote. However, only the moderator can reveal or reset. If the moderator is unavailable, the session can be ended by refreshing the page and starting a new session (the old data is overwritten).</p>
+      </details>
+
+      <details>
+        <summary>Can I change my vote before reveal?</summary>
+        <p>Yes — you can click a different card at any time before the moderator clicks Reveal. Your vote updates immediately.</p>
+      </details>
+
+      <details>
+        <summary>Why doesn't "Set Story Points" work?</summary>
+        <p>The Story Points field must be added to your project's screen. See <a href="#setup">Setup Step 2</a>. This is a Jira project configuration, not an app setting.</p>
+      </details>
+
+      <details>
+        <summary>The app shows a blank panel — what do I do?</summary>
+        <p>Press <strong>Cmd+Shift+R</strong> (Mac) or <strong>Ctrl+Shift+R</strong> (Windows) to hard-refresh the page. If the issue persists, try opening the issue in an Incognito/Private browser window.</p>
+      </details>
+
+      <details>
+        <summary>How many people can join a session?</summary>
+        <p>The free plan supports up to <strong>20 participants</strong> per session. If your team exceeds 20, the 21st participant will see an upgrade prompt.</p>
+      </details>
+    </section>
+
+    <!-- Support -->
+    <section class="section" id="support">
+      <h2>&#128225; Support</h2>
+      <p>Found a bug or have a feature request? Open an issue on GitHub:</p>
+      <p>
+        <a href="https://github.com/fineanmol/jira-poker/issues" style="color:var(--blue);font-weight:600;" target="_blank" rel="noopener">
+          &#128030; github.com/fineanmol/jira-poker/issues ↗
+        </a>
+      </p>
+      <p style="margin-top:12px;">
+        <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" style="color:var(--blue);" target="_blank" rel="noopener">Privacy Policy ↗</a>
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>Planning Poker for Jira &mdash; Built on <a href="https://developer.atlassian.com/platform/forge/" target="_blank" rel="noopener">Atlassian Forge</a> &middot; <a href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" target="_blank" rel="noopener">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>
