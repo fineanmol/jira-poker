@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect x="4" y="5" width="24" height="26" rx="4" fill="#0047B3" opacity="0.3"/>
-  <rect x="3" y="3" width="24" height="26" rx="4" fill="#0C66E4"/>
-  <rect x="4.5" y="4.5" width="21" height="23" rx="3" fill="#FFFFFF"/>
-  <text x="6.5" y="11.5" font-family="serif" font-size="6" font-weight="bold" fill="#0C66E4">&#9824;</text>
-  <text x="15.5" y="21.5" text-anchor="middle" font-family="serif" font-size="14" fill="#172B4D">&#9824;</text>
-  <text x="24.5" y="25.5" text-anchor="middle" font-family="serif" font-size="6" font-weight="bold"
-        fill="#0C66E4" transform="rotate(180,24.5,22.5)">&#9824;</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="24" height="26" x="4" y="5" fill="#0047B3" opacity=".3" rx="4"/><rect width="24" height="26" x="3" y="3" fill="#0C66E4" rx="4"/><rect width="21" height="23" x="4.5" y="4.5" fill="#FFF" rx="3"/><text x="6.5" y="11.5" fill="#0C66E4" font-family="serif" font-size="6" font-weight="bold">♠</text><text x="15.5" y="21.5" fill="#172B4D" font-family="serif" font-size="14" text-anchor="middle">♠</text><text x="24.5" y="25.5" fill="#0C66E4" font-family="serif" font-size="6" font-weight="bold" text-anchor="middle" transform="rotate(180,24.5,22.5)">♠</text></svg>
