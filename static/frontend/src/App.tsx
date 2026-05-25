@@ -10,7 +10,7 @@
  * All rendering happens in views/components.
  */
 
-import './App.css';
+import './styles/index.css';
 import { useSession }    from './hooks/useSession';
 import { SetupView }     from './views/SetupView';
 import { SessionView }   from './views/SessionView';
@@ -22,6 +22,7 @@ export default function App() {
     loading, error, toast, session, ctx,
     clearError, startSession, actionLoading,
     freeTierBlocked, freeTierLimit,
+    tshirtMapping, savingTshirtMapping, saveTshirtMapping,
   } = sessionState;
 
   const devMode = isDevMode();
@@ -92,6 +93,9 @@ export default function App() {
           ctx={ctx}
           actionLoading={actionLoading}
           onStart={startSession}
+          tshirtMapping={tshirtMapping}
+          savingTshirtMapping={savingTshirtMapping}
+          onSaveTshirtMapping={saveTshirtMapping}
         />
       )}
 

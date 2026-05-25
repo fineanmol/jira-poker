@@ -1,0 +1,121 @@
+/* ================================================================
+   buttons.css — Button system
+   ================================================================ */
+
+/* ── Base ──────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition:
+    background   var(--transition),
+    border-color var(--transition),
+    box-shadow   var(--transition),
+    transform    var(--transition),
+    color        var(--transition);
+}
+
+.btn:focus-visible {
+  outline: 2.5px solid var(--sky);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):active {
+  transform: scale(.97);
+}
+
+/* ── Variants ──────────────────────────────────────────────── */
+
+/* Primary — sky blue */
+.btn--primary {
+  background: var(--sky);
+  color: var(--navy);
+  border-color: var(--sky);
+  box-shadow: var(--shadow-xs);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--sky-dark);
+  border-color: var(--sky-dark);
+  box-shadow: 0 4px 12px rgba(92,195,232,.35);
+}
+
+/* Secondary — outlined */
+.btn--secondary {
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  border-color: var(--clr-border);
+  box-shadow: var(--shadow-xs);
+}
+.btn--secondary:hover:not(:disabled) {
+  background: var(--clr-bg-hover);
+  border-color: var(--clr-border-bold);
+}
+
+/* Ghost — minimal */
+.btn--ghost {
+  background: transparent;
+  color: var(--clr-text-sub);
+  border-color: var(--clr-border);
+}
+.btn--ghost:hover:not(:disabled) {
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  border-color: var(--clr-border-bold);
+}
+
+/* Ghost active — for toggle ON state */
+.btn--ghost-active {
+  background: var(--mint-subtle);
+  color: var(--mint-dark);
+  border-color: var(--mint-bd);
+}
+.btn--ghost-active:hover:not(:disabled) {
+  background: var(--mint-bd);
+}
+
+/* Danger — coral */
+.btn--danger {
+  background: var(--coral-subtle);
+  color: var(--coral-dark);
+  border-color: var(--coral-bd);
+}
+.btn--danger:hover:not(:disabled) {
+  background: var(--coral-bd);
+  border-color: var(--coral);
+}
+
+/* Success — mint */
+.btn--success {
+  background: var(--mint-subtle);
+  color: var(--mint-dark);
+  border-color: var(--mint-bd);
+}
+
+/* Navy — for high-emphasis CTA */
+.btn--navy {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+  box-shadow: var(--shadow-xs);
+}
+.btn--navy:hover:not(:disabled) {
+  background: var(--navy-dark);
+  border-color: var(--navy-dark);
+  box-shadow: var(--shadow-navy);
+}
+
+/* Full width */
+.btn--full { width: 100%; }

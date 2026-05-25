@@ -5,7 +5,7 @@ modules:
     - key: estimation-context
       title: Agile Effort Estimation
       label: 🃏 Estimate Story Points
-      icon: resource:main;app-icon.png
+      icon: https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/suit-spade-fill.svg
       resource: main
       resolver:
         function: resolver
@@ -15,7 +15,7 @@ modules:
   jira:issuePanel:
     - key: estimation-panel
       title: Agile Effort Estimation
-      icon: resource:main;app-icon.png
+      icon: https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/suit-spade-fill.svg
       resource: main
       resolver:
         function: resolver
@@ -34,8 +34,6 @@ app:
   id: ari:cloud:ecosystem::app/4f4ab9d3-1cfb-4ebf-b265-987811a57b61
   runtime:
     name: nodejs22.x
-  licensing:
-    enabled: true
 permissions:
   scopes:
     - read:jira-work

@@ -1,0 +1,138 @@
+/* ================================================================
+   cards.css — Voting card grid
+   ================================================================ */
+
+/* ── Card section wrapper ───────────────────────────────────── */
+.card-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Grid ───────────────────────────────────────────────────── */
+/*
+ * 5 columns is the sweet spot for a 220-300px panel:
+ * each card ends up ~40px wide × ~53px tall (3:4 ratio).
+ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+/* Compact: tighter gap for large decks */
+.card-grid--compact { gap: 4px; }
+
+/* ── Card ───────────────────────────────────────────────────── */
+.card {
+  /* Playing-card 3:4 proportions */
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  min-width: 0;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-md);
+
+  font-weight: 800;
+  color: var(--navy);
+  cursor: pointer;
+  user-select: none;
+
+  box-shadow: var(--shadow-card);
+  transition:
+    transform    0.18s var(--ease-spring),
+    box-shadow   0.15s ease,
+    border-color 0.12s ease,
+    background   0.12s ease,
+    color        0.12s ease;
+}
+
+/* Top accent stripe */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--clr-border);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  transition: background 0.12s ease;
+}
+
+/* Corner value pip — top-left */
+.card::after {
+  content: attr(data-value);
+  position: absolute;
+  top: 5px; left: 5px;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  opacity: .65;
+  line-height: 1;
+  pointer-events: none;
+  max-width: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: color 0.12s ease, opacity 0.12s ease;
+}
+
+/* ── Hover state ────────────────────────────────────────────── */
+.card:hover:not(:disabled) {
+  transform: translateY(-5px) scale(1.04);
+  border-color: var(--sky);
+  border-width: 2px;
+  box-shadow: var(--shadow-raise);
+  z-index: 1;
+}
+
+.card:hover:not(:disabled)::before {
+  background: var(--sky);
+}
+
+.card:active:not(:disabled) {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.card:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+}
+
+/* ── Selected state ─────────────────────────────────────────── */
+.card--selected {
+  background: var(--navy);
+  border-color: var(--navy);
+  border-width: 2px;
+  color: white;
+  transform: translateY(-5px) scale(1.04);
+  /* Sunshine inset stripe + navy drop-shadow */
+  box-shadow:
+    inset 0 3px 0 var(--sunshine),
+    0 8px 24px rgba(49,72,85,.30),
+    0 0 0 1px rgba(49,72,85,.14);
+  z-index: 1;
+}
+
+.card--selected::before {
+  background: var(--sunshine);
+}
+
+.card--selected::after {
+  color: var(--sunshine);
+  opacity: .8;
+}
+
+/* ── Center value label ─────────────────────────────────────── */
+.card__value {
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  position: relative;
+  z-index: 1;
+}

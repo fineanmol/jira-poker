@@ -1,0 +1,40 @@
+/* ================================================================
+   action-bar.css — Session action buttons
+   Two-row layout:
+     Row 1 (.action-bar__primary)  — full-width primary action
+     Row 2 (.action-bar__controls) — compact moderator controls
+   ================================================================ */
+
+.action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+/* ── Row 1: primary action ──────────────────────────────────── */
+.action-bar__primary {
+  display: flex;
+}
+
+.action-bar__primary .btn {
+  flex: 1;
+  padding: 9px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+}
+
+/* ── Row 2: moderator controls ──────────────────────────────── */
+.action-bar__controls {
+  display: flex;
+  gap: 5px;
+}
+
+.action-bar__controls .btn {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  padding: 6px 8px;
+  font-weight: 600;
+}

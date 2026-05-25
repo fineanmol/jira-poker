@@ -1,4 +1,3 @@
-import { DECKS } from '../types';
 import type { Session, EstimationResults } from '../types';
 
 /**
@@ -58,24 +57,21 @@ export function calcResults(session: Session): EstimationResults {
 }
 
 /**
- * Resolve the final "recommended story points" value to save on the ticket.
- * For T-shirt decks, map the most-voted size to its numeric equivalent.
+ * Resolve the final "recommended story points" value to display and save on the ticket.
+ * For T-shirt decks this returns the winning size string (e.g. 'XL'); the backend
+ * applies the user's personal size → SP mapping when setStoryPoints is called.
  */
 export function resolveSuggestedPoints(
-  session: Session,
+  _session: Session,
   results: EstimationResults
 ): number | string | null {
   if (!results) return null;
 
-  // Direct numeric suggestion (Fibonacci, powers-of-2, sequential)
+  // For T-shirt decks calcResults already sets suggested = the top-voted size string
+  // (e.g. 'XL'). The numeric conversion is done by the backend using the user's
+  // personal mapping stored in Forge Storage.
   if (results.suggested !== null) return results.suggested;
 
-  // T-shirt deck: map top vote to numeric points
-  if (session.deck === 'tshirt' && results.distribution.length > 0) {
-    const topValue = String(results.distribution[0].value);
-    return DECKS.tshirt.toPoints?.[topValue] ?? null;
-  }
-
-  // Fall back to average for numeric decks with no clear winner
+  // Numeric decks with no clear winner: fall back to average
   return results.average;
 }

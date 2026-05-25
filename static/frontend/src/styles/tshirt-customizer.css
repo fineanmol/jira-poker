@@ -1,0 +1,132 @@
+/* ================================================================
+   tshirt-customizer.css — Inline T-shirt mapping editor
+   ================================================================ */
+
+/* ── Outer <details> ────────────────────────────────────────── */
+.tshirt-customizer {
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  background: var(--clr-bg);
+  overflow: hidden;
+}
+
+/* ── Toggle <summary> ───────────────────────────────────────── */
+.tshirt-customizer__toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--clr-text-sub);
+  cursor: pointer;
+  user-select: none;
+  list-style: none; /* remove default marker in Firefox */
+  transition: background var(--transition), color var(--transition);
+}
+
+/* Remove default arrow in WebKit */
+.tshirt-customizer__toggle::-webkit-details-marker { display: none; }
+
+.tshirt-customizer__toggle::before {
+  content: '▶';
+  font-size: 8px;
+  display: inline-block;
+  transition: transform 0.15s ease;
+  color: var(--clr-text-muted);
+}
+
+details[open] > .tshirt-customizer__toggle::before {
+  transform: rotate(90deg);
+}
+
+.tshirt-customizer__toggle:hover {
+  background: var(--clr-bg-hover);
+  color: var(--clr-text);
+}
+
+/* ── Body (expanded content) ────────────────────────────────── */
+.tshirt-customizer__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 10px 10px;
+  border-top: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  animation: slide-down .15s ease;
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Description text ───────────────────────────────────────── */
+.tshirt-customizer__desc {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  line-height: 1.5;
+  padding-top: 8px;
+}
+
+/* ── Mapping grid ───────────────────────────────────────────── */
+.tshirt-customizer__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Single row: XS → [4] SP ────────────────────────────────── */
+.tshirt-customizer__row {
+  display: grid;
+  grid-template-columns: 32px 18px 1fr 22px;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 0;
+}
+
+.tshirt-customizer__size {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  text-align: right;
+}
+
+.tshirt-customizer__arrow {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  text-align: center;
+}
+
+.tshirt-customizer__input {
+  width: 100%;
+  padding: 4px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--navy);
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: textfield; /* hide spinner arrows */
+  -moz-appearance: textfield;
+}
+
+.tshirt-customizer__input::-webkit-inner-spin-button,
+.tshirt-customizer__input::-webkit-outer-spin-button { appearance: none; }
+
+.tshirt-customizer__input:focus {
+  outline: none;
+  border-color: var(--sky);
+  box-shadow: 0 0 0 2px rgba(92,195,232,.2);
+}
+
+.tshirt-customizer__unit {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}

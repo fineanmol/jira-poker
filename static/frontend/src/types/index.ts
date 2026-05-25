@@ -38,6 +38,26 @@ export const DECKS: Record<DeckType, DeckDefinition> = {
   },
 };
 
+// ─── T-shirt mapping ──────────────────────────────────────────────────────────
+
+/** Maps each T-shirt label to a numeric story-point value. */
+export interface TshirtMapping {
+  XS:  number;
+  S:   number;
+  M:   number;
+  L:   number;
+  XL:  number;
+  XXL: number;
+}
+
+/** Canonical T-shirt label order for display purposes. */
+export const TSHIRT_SIZES: (keyof TshirtMapping)[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+/** Used when no custom mapping has been saved yet. */
+export const DEFAULT_TSHIRT_MAPPING: TshirtMapping = {
+  XS: 1, S: 2, M: 3, L: 5, XL: 8, XXL: 13,
+};
+
 // ─── Domain types ─────────────────────────────────────────────────────────────
 
 export interface Vote {

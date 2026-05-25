@@ -1,6 +1,6 @@
 {
   "name": "agile-effort-estimation",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Planning Poker estimation tool for Jira Cloud — Atlassian Forge app",
   "license": "MIT",
   "private": true,

@@ -1,0 +1,54 @@
+/* ================================================================
+   app.css — Shell, session layout, loading state
+   ================================================================ */
+
+/* ── App shell ─────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 10px;
+  /* Forge iframe-resizer requires min-height so content is visible */
+  min-height: 480px;
+  background: var(--clr-bg);
+}
+
+/* ── Session view ──────────────────────────────────────────── */
+.session-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Section heading ───────────────────────────────────────── */
+.section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--clr-text-muted);
+  margin-bottom: 6px;
+}
+
+/* ── Loading ───────────────────────────────────────────────── */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--clr-text-muted);
+  font-size: 12px;
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border: 2.5px solid var(--clr-border);
+  border-top-color: var(--sky);
+  border-radius: 50%;
+  animation: spin .75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

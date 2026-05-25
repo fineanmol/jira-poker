@@ -1,28 +1,34 @@
 import { useState } from 'react';
 import { DECKS } from '../types';
-import type { DeckType, ForgeContext } from '../types';
+import type { DeckType, ForgeContext, TshirtMapping } from '../types';
 import { getIssueKey } from '../lib/utils';
+import { TshirtCustomizer } from '../components/TshirtCustomizer';
 
 interface SetupViewProps {
-  ctx:           ForgeContext | null;
-  actionLoading: boolean;
-  onStart:       (deck: DeckType, autoReveal: boolean) => void;
+  ctx:                  ForgeContext | null;
+  actionLoading:        boolean;
+  onStart:              (deck: DeckType, autoReveal: boolean) => void;
+  tshirtMapping:        TshirtMapping;
+  savingTshirtMapping:  boolean;
+  onSaveTshirtMapping:  (mapping: TshirtMapping) => Promise<void>;
 }
 
-export function SetupView({ ctx, actionLoading, onStart }: SetupViewProps) {
+export function SetupView({
+  ctx, actionLoading, onStart,
+  tshirtMapping, savingTshirtMapping, onSaveTshirtMapping,
+}: SetupViewProps) {
   const [selectedDeck, setSelectedDeck] = useState<DeckType>('fibonacci');
   const [autoReveal, setAutoReveal]     = useState(false);
   const issueKey = ctx ? getIssueKey(ctx) : '';
 
   return (
     <div className="setup-view">
-      <header className="app-header">
-        <span className="app-header__icon" aria-hidden="true">🃏</span>
-        <div className="app-header__text">
-          <h1 className="app-header__title">Planning Poker</h1>
-          {issueKey && <p className="app-header__issue">{issueKey}</p>}
-        </div>
-      </header>
+      {/* Hero — dark navy card with centred title + issue key */}
+      <div className="setup-hero" role="banner">
+        <img src="./app-icon.png" alt="" className="setup-hero__logo" aria-hidden="true" />
+        <h1 className="setup-hero__title">Planning Poker</h1>
+        {issueKey && <p className="setup-hero__sub">{issueKey}</p>}
+      </div>
 
       <section aria-label="Choose voting scale">
         <h2 className="section-title">Choose a voting scale</h2>
@@ -57,6 +63,15 @@ export function SetupView({ ctx, actionLoading, onStart }: SetupViewProps) {
           />
           <span>Auto-reveal when everyone votes</span>
         </label>
+
+        {/* Show customizer only when T-shirt deck is selected */}
+        {selectedDeck === 'tshirt' && (
+          <TshirtCustomizer
+            mapping={tshirtMapping}
+            saving={savingTshirtMapping}
+            onSave={onSaveTshirtMapping}
+          />
+        )}
       </section>
 
       <button

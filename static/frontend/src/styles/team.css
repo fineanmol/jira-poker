@@ -1,0 +1,181 @@
+/* ================================================================
+   team.css — Team status section, participant rows, vote pills
+   ================================================================ */
+
+/* ── Team status container ─────────────────────────────────── */
+.team-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 10px 8px;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── Header row (title + progress) ─────────────────────────── */
+.team-status__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.team-status__header .section-title { margin-bottom: 0; }
+
+/* ── Progress bar ───────────────────────────────────────────── */
+.team-status__progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  width: 64px;
+  height: 5px;
+  background: var(--clr-bg);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sky) 0%, var(--mint) 100%);
+  border-radius: var(--radius-pill);
+  transition: width .45s var(--ease-smooth);
+  min-width: 4px;
+}
+
+.progress-bar__label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--clr-text-sub);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Participant list ───────────────────────────────────────── */
+.participant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.participant-list__empty {
+  font-size: 12px;
+  color: var(--clr-text-muted);
+  padding: 8px 0;
+  text-align: center;
+}
+
+/* ── Participant row ────────────────────────────────────────── */
+.participant-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.participant-row--voted {
+  background: var(--mint-subtle);
+}
+
+.participant-row--waiting {
+  background: transparent;
+}
+
+.participant-row:hover {
+  background: var(--clr-bg-hover);
+}
+
+.participant-row--voted:hover {
+  background: var(--mint-bd);
+}
+
+/* ── Name ───────────────────────────────────────────────────── */
+.participant-row__name {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clr-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* ── Status (vote pill + nudge) ─────────────────────────────── */
+.participant-row__status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ── Vote pills ─────────────────────────────────────────────── */
+.vote-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform var(--transition);
+}
+
+.vote-pill--voted {
+  background: var(--mint-subtle);
+  color: var(--mint-dark);
+  border: 1px solid var(--mint-bd);
+}
+
+.vote-pill--waiting {
+  background: var(--clr-bg);
+  color: var(--clr-text-muted);
+  border: 1px solid var(--clr-border);
+}
+
+.vote-pill--revealed {
+  background: var(--navy);
+  color: white;
+  border: 1px solid var(--navy-dark);
+  box-shadow: var(--shadow-xs);
+  animation: pill-pop .2s var(--ease-spring);
+}
+
+.vote-pill--absent {
+  background: var(--clr-bg);
+  color: var(--clr-text-muted);
+  border: 1px solid var(--clr-border);
+}
+
+@keyframes pill-pop {
+  from { transform: scale(.7); opacity: .5; }
+  to   { transform: scale(1);  opacity: 1; }
+}
+
+/* ── Nudge button ───────────────────────────────────────────── */
+.nudge-btn {
+  padding: 2px 4px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  opacity: .55;
+  transition: opacity var(--transition), background var(--transition), transform var(--transition);
+}
+
+.nudge-btn:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--sky-subtle);
+  transform: scale(1.1);
+}
+
+.nudge-btn:disabled { opacity: .35; }

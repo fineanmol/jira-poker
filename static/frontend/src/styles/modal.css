@@ -1,0 +1,80 @@
+/* ================================================================
+   modal.css — Deck picker modal overlay
+   ================================================================ */
+
+/* ── Backdrop ───────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(49,72,85,.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+  animation: backdrop-in .15s ease;
+}
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal sheet ────────────────────────────────────────────── */
+.modal {
+  background: var(--clr-surface);
+  border-radius: var(--radius-xl);
+  padding: 18px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: modal-up .18s var(--ease-spring);
+}
+
+@keyframes modal-up {
+  from { transform: translateY(10px) scale(.97); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);   opacity: 1; }
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.modal__close {
+  font-size: 16px;
+  color: var(--clr-text-muted);
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), color var(--transition);
+  line-height: 1;
+}
+
+.modal__close:hover {
+  background: var(--coral-subtle);
+  color: var(--coral);
+}
+
+/* ── Warning note ───────────────────────────────────────────── */
+.modal__warning {
+  font-size: 11px;
+  color: var(--navy-mid);
+  background: var(--sunshine-subtle);
+  border: 1px solid var(--sunshine-bd);
+  border-left: 3px solid var(--sunshine);
+  border-radius: var(--radius-sm);
+  padding: 7px 9px;
+  line-height: 1.5;
+}

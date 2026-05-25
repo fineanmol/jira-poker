@@ -15,10 +15,11 @@ import { api, getCurrentUserDisplayName } from '../lib/api';
 import { calcResults, resolveSuggestedPoints } from '../lib/calculations';
 import { getIssueId, getIssueKey } from '../lib/utils';
 import { useToast } from './useToast';
-import { DECKS } from '../types';
+import { DECKS, DEFAULT_TSHIRT_MAPPING } from '../types';
+import { MAX_FREE_PARTICIPANTS } from '../lib/constants';
 import type {
   Session, ForgeContext, DeckType,
-  DeckDefinition, Participant, EstimationResults,
+  DeckDefinition, Participant, EstimationResults, TshirtMapping,
 } from '../types';
 
 const POLL_INTERVAL_MS = 3000;
@@ -26,16 +27,17 @@ const POLL_INTERVAL_MS = 3000;
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SessionActions {
-  startSession:      (deck: DeckType, autoReveal: boolean) => Promise<void>;
-  vote:              (value: number | string) => Promise<void>;
-  reveal:            () => Promise<void>;
-  reset:             () => Promise<void>;
-  changeDeck:        (deck: DeckType) => Promise<void>;
-  toggleAutoReveal:  () => Promise<void>;
-  nudge:             (accountId: string, displayName: string) => Promise<void>;
-  setStoryPoints:    (points: number | string) => Promise<void>;
-  endSession:        () => Promise<void>;
-  clearError:        () => void;
+  startSession:        (deck: DeckType, autoReveal: boolean) => Promise<void>;
+  vote:                (value: number | string) => Promise<void>;
+  reveal:              () => Promise<void>;
+  reset:               () => Promise<void>;
+  changeDeck:          (deck: DeckType) => Promise<void>;
+  toggleAutoReveal:    () => Promise<void>;
+  nudge:               (accountId: string, displayName: string) => Promise<void>;
+  setStoryPoints:      (points: number | string) => Promise<void>;
+  endSession:          () => Promise<void>;
+  clearError:          () => void;
+  saveTshirtMapping:   (mapping: TshirtMapping) => Promise<void>;
 }
 
 export interface UseSessionReturn extends SessionActions {
@@ -53,6 +55,10 @@ export interface UseSessionReturn extends SessionActions {
   // Free-tier limit state
   freeTierBlocked: boolean;
   freeTierLimit:   number;
+
+  // T-shirt mapping
+  tshirtMapping:       TshirtMapping;
+  savingTshirtMapping: boolean;
 
   // Derived
   myAccountId:      string;
@@ -78,7 +84,9 @@ export function useSession(): UseSessionReturn {
   const [storyPointsSet, setStoryPointsSet] = useState(false);
   const [nudging, setNudging]             = useState<Record<string, boolean>>({});
   const [freeTierBlocked, setFreeTierBlocked] = useState(false);
-  const [freeTierLimit, setFreeTierLimit]   = useState(20);
+  const [freeTierLimit, setFreeTierLimit]   = useState(MAX_FREE_PARTICIPANTS);
+  const [tshirtMapping, setTshirtMapping]   = useState<TshirtMapping>({ ...DEFAULT_TSHIRT_MAPPING });
+  const [savingTshirtMapping, setSavingTshirtMapping] = useState(false);
   const { message: toast, show: showToast } = useToast();
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -133,13 +141,16 @@ export function useSession(): UseSessionReturn {
               // Parse: "FREE_TIER_LIMIT:<limit>:<human message>"
               const [, limitStr] = msg.split(':');
               setFreeTierBlocked(true);
-              setFreeTierLimit(Number(limitStr) || 20);
+              setFreeTierLimit(Number(limitStr) || MAX_FREE_PARTICIPANTS);
               // Still show the session state so moderator can manage it
             } else {
               throw joinErr;
             }
           }
         }
+        // Load user's saved T-shirt mapping (fire-and-forget, don't block bootstrap)
+        api.getTshirtMapping().then(setTshirtMapping).catch(() => {/* use default */});
+
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {
@@ -267,6 +278,19 @@ export function useSession(): UseSessionReturn {
 
   const clearError = useCallback(() => setError(null), []);
 
+  const saveTshirtMapping = useCallback(async (mapping: TshirtMapping) => {
+    setSavingTshirtMapping(true);
+    try {
+      const result = await api.setTshirtMapping(mapping);
+      setTshirtMapping(result.mapping);
+      showToast('✓ T-shirt mapping saved');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save mapping');
+    } finally {
+      setSavingTshirtMapping(false);
+    }
+  }, [showToast]);
+
   // ── Derived state (memoised) ──────────────────────────────────────────────
 
   const myAccountId = ctx?.accountId ?? '';
@@ -308,6 +332,8 @@ export function useSession(): UseSessionReturn {
     storyPointsSet, nudging, toast,
     // Free tier
     freeTierBlocked, freeTierLimit,
+    // T-shirt mapping
+    tshirtMapping, savingTshirtMapping,
     // Derived
     myAccountId, isModerator, currentDeck,
     participants, voteCount, participantCount,
@@ -317,5 +343,6 @@ export function useSession(): UseSessionReturn {
     changeDeck, toggleAutoReveal,
     nudge, setStoryPoints,
     endSession, clearError,
+    saveTshirtMapping,
   };
 }

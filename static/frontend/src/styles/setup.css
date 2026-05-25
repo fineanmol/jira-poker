@@ -1,0 +1,154 @@
+/* ================================================================
+   setup.css — Setup / onboarding view
+   ================================================================ */
+
+/* ── Container ──────────────────────────────────────────────── */
+.setup-view {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Hero / intro card ──────────────────────────────────────── */
+.setup-hero {
+  background: var(--navy);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.setup-hero__icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+}
+
+/* Image-based logo */
+.setup-hero__logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  display: block;
+  margin: 0 auto 10px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
+}
+
+.setup-hero__title {
+  font-size: 15px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4px;
+  letter-spacing: -.01em;
+}
+
+.setup-hero__sub {
+  font-size: 11px;
+  color: rgba(255,255,255,.65);
+  line-height: 1.5;
+}
+
+/* ── Deck picker grid ───────────────────────────────────────── */
+.deck-picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.deck-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  background: var(--clr-surface);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition:
+    border-color var(--transition),
+    background   var(--transition),
+    box-shadow   var(--transition),
+    transform    var(--transition);
+}
+
+.deck-option:hover {
+  border-color: var(--sky);
+  background: var(--sky-subtle);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-raise);
+}
+
+.deck-option--selected {
+  border-color: var(--navy);
+  border-width: 2px;
+  background: var(--navy-subtle);
+  box-shadow: 0 0 0 1px var(--navy), var(--shadow-xs);
+}
+
+.deck-option--selected:hover {
+  transform: none;
+}
+
+.deck-option__emoji {
+  font-size: 18px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.deck-option__name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.deck-option--selected .deck-option__name {
+  color: var(--navy);
+}
+
+.deck-option__preview {
+  font-size: 10px;
+  color: var(--clr-text-muted);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* ── Options (toggles) ──────────────────────────────────────── */
+.setup-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--clr-text);
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.toggle-label:hover {
+  background: var(--clr-bg-hover);
+}
+
+.toggle-label input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--sky);
+  cursor: pointer;
+  flex-shrink: 0;
+}

@@ -1,0 +1,28 @@
+/* ================================================================
+   styles/index.css — Single import entry point
+   Load order: tokens → reset → layout → components
+   ================================================================ */
+
+/* Foundations */
+@import './_tokens.css';
+@import './_reset.css';
+
+/* Layout + shell */
+@import './app.css';
+
+/* Cross-cutting UI */
+@import './banners.css';
+@import './buttons.css';
+@import './avatar.css';
+
+/* Session components */
+@import './header.css';
+@import './team.css';
+@import './cards.css';
+@import './results.css';
+@import './action-bar.css';
+
+/* Views + overlays */
+@import './setup.css';
+@import './modal.css';
+@import './tshirt-customizer.css';

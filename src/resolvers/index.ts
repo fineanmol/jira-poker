@@ -46,11 +46,20 @@ const TSHIRT_TO_POINTS: Record<string, number> = {
   XS: 1, S: 2, M: 3, L: 5, XL: 8, XXL: 13,
 };
 
+/** Storage key for a user's custom T-shirt → story-point mapping */
+const tshirtMapKey = (accountId: string) => `tshirt-map-${accountId}`;
+
+/** Returns the stored mapping for `accountId`, or the built-in defaults */
+async function loadTshirtMapping(accountId: string): Promise<Record<string, number>> {
+  const stored = await storage.get(tshirtMapKey(accountId)) as Record<string, number> | null;
+  return stored ?? { ...TSHIRT_TO_POINTS };
+}
+
 /**
  * Free tier: up to this many participants per session.
  * A valid Marketplace license (paid) removes this cap.
  */
-const MAX_FREE_PARTICIPANTS = 20;
+const MAX_FREE_PARTICIPANTS = 15;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -329,13 +338,17 @@ resolver.define('nudgeParticipant', async ({ payload, context }) => {
 });
 
 /** Set story points on a Jira issue (handles T-shirt → points mapping) */
-resolver.define('setStoryPoints', async ({ payload }) => {
+resolver.define('setStoryPoints', async ({ payload, context }) => {
   const { issueId, points } = payload as { issueId: string; points: number | string };
+  const { accountId } = context as ResolverContext;
+
+  // Use the caller's custom mapping (falls back to built-in defaults)
+  const tshirtMap = await loadTshirtMapping(accountId);
 
   // Map T-shirt sizes to numeric story points
   let numericPoints: number;
-  if (typeof points === 'string' && TSHIRT_TO_POINTS[points]) {
-    numericPoints = TSHIRT_TO_POINTS[points];
+  if (typeof points === 'string' && tshirtMap[points]) {
+    numericPoints = tshirtMap[points];
   } else {
     numericPoints = Number(points);
   }
@@ -379,6 +392,27 @@ resolver.define('deleteSession', async ({ payload, context }) => {
   if (session.moderatorId !== accountId) throw new Error('Only the moderator can end the session.');
   await storage.delete(sessionKey(issueId));
   return { deleted: true };
+});
+
+/** Return the caller's saved T-shirt mapping (or defaults) */
+resolver.define('getTshirtMapping', async ({ context }) => {
+  const { accountId } = context as ResolverContext;
+  return loadTshirtMapping(accountId);
+});
+
+/** Persist a custom T-shirt → story-point mapping for the caller */
+resolver.define('setTshirtMapping', async ({ payload, context }) => {
+  const { mapping } = payload as { mapping: Record<string, number> };
+  const { accountId } = context as ResolverContext;
+
+  // Validate: every value must be a positive finite number
+  const isValid = Object.values(mapping).every(
+    (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+  );
+  if (!isValid) throw new Error('Invalid mapping: all story-point values must be positive numbers.');
+
+  await storage.set(tshirtMapKey(accountId), mapping);
+  return { saved: true, mapping };
 });
 
 export const handler = resolver.getDefinitions();

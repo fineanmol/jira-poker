@@ -20,7 +20,9 @@ export function SessionView(props: UseSessionReturn) {
     currentDeck, participants, voteCount, participantCount,
     results, suggestedPoints, storyPointsSet,
     actionLoading, nudging,
-    vote, reveal, reset, changeDeck, toggleAutoReveal, nudge, setStoryPoints, endSession,
+    tshirtMapping, savingTshirtMapping,
+    vote, reveal, reset, changeDeck, toggleAutoReveal, nudge,
+    setStoryPoints, endSession, saveTshirtMapping,
   } = props;
 
   const [showDeckPicker, setShowDeckPicker] = useState(false);
@@ -35,7 +37,7 @@ export function SessionView(props: UseSessionReturn) {
     <div className="session-view">
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="app-header" aria-label="Session header">
-        <span className="app-header__icon" aria-hidden="true">🃏</span>
+        <img src="./app-icon.png" alt="" className="app-header__logo" aria-hidden="true" />
         <div className="app-header__text">
           {session.issueKey && (
             <p className="app-header__issue">{session.issueKey}</p>
@@ -97,6 +99,9 @@ export function SessionView(props: UseSessionReturn) {
           storyPointsSet={storyPointsSet}
           actionLoading={actionLoading}
           onSetPoints={setStoryPoints}
+          tshirtMapping={tshirtMapping}
+          savingTshirtMapping={savingTshirtMapping}
+          onSaveTshirtMapping={saveTshirtMapping}
         />
       )}
 

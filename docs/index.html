@@ -6,21 +6,32 @@
   <title>Planning Poker for Jira — Documentation</title>
   <style>
     :root {
-      --blue: #0C66E4;
-      --blue-dark: #0055CC;
-      --blue-subtle: #E9F2FF;
-      --text: #172B4D;
-      --text-sub: #44546F;
-      --text-muted: #626F86;
-      --border: #DCDFE4;
-      --bg: #F7F8F9;
-      --white: #FFFFFF;
-      --green: #1F845A;
-      --green-bg: #DCFFF1;
-      --radius: 8px;
-      --shadow: 0 1px 3px rgba(9,30,66,.12), 0 0 1px rgba(9,30,66,.08);
+      /* Brand palette — matches the plugin */
+      --navy:          #314855;
+      --navy-dark:     #243540;
+      --sky:           #5cc3e8;
+      --sky-subtle:    #e4f6fc;
+      --sky-bd:        #a8dff0;
+      --sunshine:      #ffdb00;
+      --sunshine-subtle: #fffce0;
+      --sunshine-bd:   #ffe966;
+      --mint:          #79ceb8;
+      --mint-subtle:   #e6f7f3;
+      --mint-bd:       #b3e5d8;
+      --coral:         #e95f5c;
+      --coral-subtle:  #fdecea;
+      --coral-bd:      #f5a8a7;
+      /* Neutrals */
+      --bg:     #f0f5f8;
+      --white:  #ffffff;
+      --border: #cddae2;
+      --text:   #314855;
+      --text-sub:   #4d6977;
+      --text-muted: #7a9aaa;
+      --radius: 10px;
+      --shadow: 0 2px 8px rgba(49,72,85,.10), 0 0 0 1px rgba(49,72,85,.06);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: var(--text);
@@ -30,8 +41,7 @@
 
     /* ── Nav ── */
     nav {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
+      background: var(--navy);
       padding: 0 24px;
       display: flex;
       align-items: center;
@@ -40,50 +50,64 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: var(--shadow);
+      box-shadow: 0 2px 8px rgba(49,72,85,.25);
     }
     .nav-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; }
-    .nav-title { font-weight: 700; font-size: 15px; color: var(--text); }
+    .nav-title { font-weight: 700; font-size: 15px; color: #fff; }
     .nav-badge {
       font-size: 11px;
-      background: var(--blue-subtle);
-      color: var(--blue);
-      border-radius: 4px;
-      padding: 2px 8px;
+      background: rgba(92,195,232,.2);
+      color: var(--sky);
+      border: 1px solid rgba(92,195,232,.3);
+      border-radius: 20px;
+      padding: 2px 9px;
       font-weight: 600;
     }
     .nav-link {
       margin-left: auto;
-      color: var(--blue);
+      color: var(--sky);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
     }
-    .nav-link:hover { text-decoration: underline; }
+    .nav-link:hover { color: #fff; }
 
     /* ── Hero ── */
     .hero {
-      background: linear-gradient(135deg, var(--blue) 0%, #0747A6 100%);
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
       color: white;
       padding: 64px 24px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .hero-icon { width: 96px; height: 96px; margin: 0 auto 16px; display: block; border-radius: 16px; }
-    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
-    .hero p { font-size: 16px; opacity: .88; max-width: 520px; margin: 0 auto 24px; }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(92,195,232,.08);
+      pointer-events: none;
+    }
+    .hero-icon { width: 96px; height: 96px; margin: 0 auto 16px; display: block; border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -.02em; }
+    .hero p { font-size: 16px; opacity: .8; max-width: 520px; margin: 0 auto 24px; }
     .hero-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .badge {
-      background: rgba(255,255,255,.2);
-      border: 1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
       border-radius: 20px;
-      padding: 4px 12px;
+      padding: 4px 13px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
     }
+    .badge--sky { background: rgba(92,195,232,.2); border-color: rgba(92,195,232,.4); color: #a8dff0; }
+    .badge--sunshine { background: rgba(255,219,0,.18); border-color: rgba(255,219,0,.4); color: var(--sunshine); }
 
     /* ── Layout ── */
     .layout {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 40px 24px;
       display: grid;
@@ -104,26 +128,27 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
+      box-shadow: var(--shadow);
     }
     .sidebar h3 {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: .06em;
+      letter-spacing: .08em;
       color: var(--text-muted);
       margin-bottom: 10px;
     }
     .sidebar a {
       display: block;
       padding: 5px 8px;
-      border-radius: 4px;
+      border-radius: 5px;
       color: var(--text-sub);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
-      transition: background .15s;
+      transition: background .14s, color .14s;
     }
-    .sidebar a:hover { background: var(--blue-subtle); color: var(--blue); }
+    .sidebar a:hover { background: var(--sky-subtle); color: var(--navy); }
 
     /* ── Sections ── */
     .section {
@@ -135,24 +160,21 @@
       box-shadow: var(--shadow);
     }
     .section h2 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--navy);
       margin-bottom: 16px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .section h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      margin: 20px 0 8px;
-    }
+    .section h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin: 20px 0 8px; }
     .section p { font-size: 14px; color: var(--text-sub); margin-bottom: 12px; }
     .section p:last-child { margin-bottom: 0; }
+    .section ul { font-size: 13px; color: var(--text-sub); padding-left: 20px; margin: 8px 0; }
+    .section ul li { margin-bottom: 4px; }
 
     /* ── Steps ── */
     .steps { counter-reset: step; }
@@ -168,7 +190,7 @@
       counter-increment: step;
       min-width: 32px;
       height: 32px;
-      background: var(--blue);
+      background: var(--navy);
       color: white;
       border-radius: 50%;
       display: flex;
@@ -181,51 +203,94 @@
     .step-num::before { content: counter(step); }
     .step-body h3 { margin-top: 4px; }
 
-    /* ── Screenshot placeholder ── */
-    .screenshot {
-      background: var(--bg);
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 32px 16px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
-      margin: 12px 0;
-    }
-    .screenshot-label {
-      background: var(--white);
+    /* ── UI mocks ── */
+    .ui-mock {
+      background: #f0f5f8;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 12px 16px;
-      margin: 12px 0;
-      font-size: 13px;
-      color: var(--text-sub);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .screen-mock {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
+      padding: 14px;
       margin: 12px 0;
       font-size: 13px;
     }
-    .screen-mock-header {
+    .ui-mock-header {
+      background: var(--navy);
+      color: white;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
       font-weight: 700;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
       margin-bottom: 10px;
     }
+    .ui-mock-deck-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 10px;
+      color: rgba(255,255,255,.85);
+    }
+    .card-row { display: flex; gap: 5px; flex-wrap: wrap; margin: 8px 0; }
+    .mock-card {
+      border: 1.5px solid var(--border);
+      background: white;
+      border-radius: 6px;
+      padding: 8px 7px;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--navy);
+      min-width: 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .mock-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--border);
+      border-radius: 6px 6px 0 0;
+    }
+    .mock-card.selected {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+      box-shadow: inset 0 3px 0 var(--sunshine);
+    }
+    .mock-card.selected::before { background: var(--sunshine); }
+    .participant-mock { display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 5px; margin-bottom: 3px; }
+    .participant-mock.voted { background: #e6f7f3; }
+    .avatar-mock { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; flex-shrink: 0; }
+    .vote-pill-mock {
+      margin-left: auto;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .pill-voted { background: #e6f7f3; color: #55b8a0; border: 1px solid #b3e5d8; }
+    .pill-waiting { background: #f0f5f8; color: #7a9aaa; border: 1px solid #cddae2; }
+    .pill-revealed { background: var(--navy); color: white; }
+    .btn-mock {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-sky { background: var(--sky); color: var(--navy); }
+    .btn-navy { background: var(--navy); color: white; }
+    .btn-full { display: block; width: 100%; text-align: center; }
 
     /* ── Feature grid ── */
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
       margin-top: 8px;
     }
     .feature-card {
@@ -233,10 +298,64 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 14px;
+      transition: border-color .15s, box-shadow .15s;
     }
+    .feature-card:hover { border-color: var(--sky-bd); box-shadow: var(--shadow); }
     .feature-card .icon { font-size: 20px; margin-bottom: 6px; }
-    .feature-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .feature-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
     .feature-card p { font-size: 12px; color: var(--text-sub); margin: 0; }
+
+    /* ── Pricing plans ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    @media (max-width: 560px) { .plans-grid { grid-template-columns: 1fr; } }
+    .plan-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .plan-card--pro { border-color: var(--sunshine-bd); }
+    .plan-header {
+      padding: 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-header--pro {
+      background: var(--navy);
+      border-bottom-color: var(--navy-dark);
+    }
+    .plan-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 2px;
+    }
+    .plan-header--pro .plan-name { color: white; }
+    .plan-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -.03em;
+    }
+    .plan-header--pro .plan-price { color: var(--sunshine); }
+    .plan-price span { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-left: 4px; }
+    .plan-header--pro .plan-price span { color: rgba(255,255,255,.6); }
+    .plan-body { padding: 14px 16px; }
+    .plan-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .plan-feature:last-child { margin-bottom: 0; }
+    .plan-feature .check { color: var(--mint); font-size: 14px; flex-shrink: 0; }
+    .plan-feature .star  { color: var(--sunshine); font-size: 14px; flex-shrink: 0; }
 
     /* ── Table ── */
     table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
@@ -262,7 +381,7 @@
       padding: 1px 5px;
       font-size: 12px;
       font-family: 'SF Mono', 'Fira Code', monospace;
-      color: #AE2E24;
+      color: var(--coral);
     }
 
     /* ── Callout ── */
@@ -273,30 +392,48 @@
       display: flex;
       gap: 10px;
       margin: 12px 0;
+      line-height: 1.5;
     }
-    .callout--info { background: var(--blue-subtle); border-left: 4px solid var(--blue); }
-    .callout--success { background: var(--green-bg); border-left: 4px solid var(--green); }
-    .callout--warn { background: #FFF7D6; border-left: 4px solid #F5CD47; }
+    .callout--info    { background: var(--sky-subtle);      border-left: 4px solid var(--sky); }
+    .callout--success { background: var(--mint-subtle);     border-left: 4px solid var(--mint); }
+    .callout--warn    { background: var(--sunshine-subtle); border-left: 4px solid var(--sunshine); }
+    .callout--pro     { background: var(--navy);            border-left: 4px solid var(--sunshine); color: white; border-radius: var(--radius); }
     .callout p { margin: 0; color: var(--text); }
+    .callout--pro p { color: rgba(255,255,255,.9); }
 
     /* ── FAQ ── */
-    details {
+    details.faq {
       border: 1px solid var(--border);
       border-radius: var(--radius);
       margin-bottom: 8px;
       overflow: hidden;
     }
-    summary {
+    details.faq summary {
       padding: 12px 16px;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
       background: var(--bg);
       user-select: none;
+      color: var(--navy);
     }
-    summary:hover { background: var(--blue-subtle); }
-    details[open] summary { border-bottom: 1px solid var(--border); }
-    details p { padding: 12px 16px; font-size: 13px; color: var(--text-sub); }
+    details.faq summary:hover { background: var(--sky-subtle); }
+    details.faq[open] summary { border-bottom: 1px solid var(--border); }
+    details.faq p { padding: 12px 16px; font-size: 13px; color: var(--text-sub); }
+
+    /* ── Screenshot label ── */
+    .screenshot-label {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
 
     /* ── Footer ── */
     footer {
@@ -307,7 +444,8 @@
       border-top: 1px solid var(--border);
       background: var(--white);
     }
-    footer a { color: var(--blue); text-decoration: none; }
+    footer a { color: var(--sky); text-decoration: none; }
+    footer a:hover { color: var(--navy); }
   </style>
 </head>
 <body>
@@ -317,7 +455,8 @@
   <img class="nav-logo" src="app-icon.png" alt="Planning Poker for Jira" />
   <span class="nav-title">Planning Poker for Jira</span>
   <span class="nav-badge">Atlassian Forge</span>
-  <a class="nav-link" href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">View on GitHub ↗</a>
+  <span class="nav-badge" style="background: rgba(121,206,184,.2); color: var(--mint); border: 1px solid rgba(121,206,184,.3);">v3.6.0</span>
+  <a class="nav-link" href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">GitHub ↗</a>
 </nav>
 
 <!-- Hero -->
@@ -328,7 +467,9 @@
   <div class="hero-badges">
     <span class="badge">Jira Cloud</span>
     <span class="badge">Atlassian Forge</span>
-    <span class="badge">Free up to 20 users</span>
+    <span class="badge badge--sky">v3.6.0</span>
+    <span class="badge badge--sky">Free up to 15 users</span>
+    <span class="badge badge--sunshine">Pro — Unlimited</span>
     <span class="badge">No external servers</span>
   </div>
 </div>
@@ -341,9 +482,11 @@
     <h3>On this page</h3>
     <a href="#overview">Overview</a>
     <a href="#features">Features</a>
+    <a href="#pricing">Plans &amp; Pricing</a>
     <a href="#setup">Setup Guide</a>
     <a href="#usage">How to Use</a>
     <a href="#decks">Voting Decks</a>
+    <a href="#tshirt">T-shirt Mapping</a>
     <a href="#story-points">Story Points</a>
     <a href="#permissions">Permissions</a>
     <a href="#faq">FAQ</a>
@@ -358,17 +501,50 @@
       <h2>&#128640; Overview</h2>
       <p>
         <strong>Planning Poker for Jira</strong> is a free Atlassian Forge app that brings story point
-        estimation directly into your Jira issues. Your team votes on effort using playing card values,
-        the facilitator reveals votes, and the agreed story points are saved to the issue — all without
+        estimation directly into your Jira issues. Your team votes on effort using playing cards,
+        the moderator reveals votes, and the agreed story points are saved to the ticket — all without
         leaving Jira.
       </p>
       <p>
-        The app is built entirely on the <strong>Atlassian Forge</strong> platform. No external servers,
+        Built entirely on the <strong>Atlassian Forge</strong> platform. No external servers,
         no data leaves Atlassian's infrastructure, and no additional accounts are required.
       </p>
       <div class="callout callout--success">
         <span>&#10003;</span>
-        <p><strong>Free for teams up to 20 participants per session.</strong> No credit card required.</p>
+        <p><strong>Free for teams up to 15 participants per session.</strong> Upgrade to Pro for unlimited participants.</p>
+      </div>
+
+      <!-- UI preview -->
+      <div class="ui-mock" style="margin-top:16px;">
+        <div class="ui-mock-header">
+          <img src="app-icon.png" alt="" style="width:18px;height:18px;border-radius:3px;object-fit:contain;" />
+          DEV-42
+          <span class="ui-mock-deck-badge">🔢 Fibonacci</span>
+        </div>
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:6px;">Team</p>
+        <div class="participant-mock voted">
+          <div class="avatar-mock" style="background:#5cc3e8;">A</div>
+          <span style="font-size:12px;font-weight:500;">Alice (you)</span>
+          <span class="vote-pill-mock pill-voted">✓</span>
+        </div>
+        <div class="participant-mock">
+          <div class="avatar-mock" style="background:#79ceb8;">B</div>
+          <span style="font-size:12px;font-weight:500;">Bob</span>
+          <span class="vote-pill-mock pill-waiting">…</span>
+        </div>
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin:10px 0 6px;">Your Vote</p>
+        <div class="card-row">
+          <div class="mock-card">1</div>
+          <div class="mock-card">2</div>
+          <div class="mock-card">3</div>
+          <div class="mock-card selected">5</div>
+          <div class="mock-card">8</div>
+          <div class="mock-card">13</div>
+          <div class="mock-card">?</div>
+        </div>
+        <div style="margin-top:10px;">
+          <span class="btn-mock btn-sky btn-full">&#128065; Reveal Votes (1/2)</span>
+        </div>
       </div>
     </section>
 
@@ -378,23 +554,23 @@
       <div class="feature-grid">
         <div class="feature-card">
           <div class="icon">&#9824;</div>
-          <h4>Multiple Card Decks</h4>
-          <p>Fibonacci, T-shirt sizes (XS–XXL), Powers of 2, and Sequential decks.</p>
+          <h4>4 Voting Decks</h4>
+          <p>Fibonacci, T-shirt sizes, Powers of 2, and Sequential — switch any time.</p>
         </div>
         <div class="feature-card">
           <div class="icon">&#128065;</div>
           <h4>Hidden Votes</h4>
-          <p>Votes stay hidden until the facilitator clicks Reveal, preventing anchoring bias.</p>
+          <p>Votes stay hidden until the moderator reveals them, preventing anchoring bias.</p>
         </div>
         <div class="feature-card">
           <div class="icon">&#128101;</div>
           <h4>Participant Tracking</h4>
-          <p>See exactly who has voted and who hasn't in real time.</p>
+          <p>Real-time view of who has voted and who hasn't, with a live progress bar.</p>
         </div>
         <div class="feature-card">
           <div class="icon">&#128276;</div>
           <h4>Nudge Non-voters</h4>
-          <p>Send a Jira comment @mention to remind teammates who haven't voted yet.</p>
+          <p>Post a Jira @mention comment to remind teammates who haven't voted yet.</p>
         </div>
         <div class="feature-card">
           <div class="icon">&#9889;</div>
@@ -409,7 +585,12 @@
         <div class="feature-card">
           <div class="icon">&#128202;</div>
           <h4>Results Summary</h4>
-          <p>Average, median, consensus score, and a vote distribution chart.</p>
+          <p>Average, median, consensus, and a vote distribution bar chart.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128395;</div>
+          <h4>Custom T-shirt Mapping</h4>
+          <p>Map XS–XXL to your own story-point values. Saved per user to your account.</p>
         </div>
         <div class="feature-card">
           <div class="icon">&#128274;</div>
@@ -419,10 +600,82 @@
       </div>
     </section>
 
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+      <h2>&#128176; Plans &amp; Pricing</h2>
+      <p>Planning Poker for Jira uses a simple freemium model managed through the Atlassian Marketplace.</p>
+
+      <div class="plans-grid">
+        <!-- Free -->
+        <div class="plan-card">
+          <div class="plan-header">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">$0 <span>forever</span></div>
+          </div>
+          <div class="plan-body">
+            <div class="plan-feature"><span class="check">✓</span> Up to <strong>15 participants</strong> per session</div>
+            <div class="plan-feature"><span class="check">✓</span> All 4 voting decks</div>
+            <div class="plan-feature"><span class="check">✓</span> Hidden votes + auto-reveal</div>
+            <div class="plan-feature"><span class="check">✓</span> Participant tracking &amp; nudge</div>
+            <div class="plan-feature"><span class="check">✓</span> Custom T-shirt mapping</div>
+            <div class="plan-feature"><span class="check">✓</span> One-click story point save</div>
+            <div class="plan-feature"><span class="check">✓</span> No credit card required</div>
+          </div>
+        </div>
+
+        <!-- Pro -->
+        <div class="plan-card plan-card--pro">
+          <div class="plan-header plan-header--pro">
+            <div class="plan-name">Pro &#11088;</div>
+            <div class="plan-price">Paid <span>via Marketplace</span></div>
+          </div>
+          <div class="plan-body">
+            <div class="plan-feature"><span class="star">★</span> <strong>Unlimited participants</strong> per session</div>
+            <div class="plan-feature"><span class="star">★</span> Everything in Free</div>
+            <div class="plan-feature"><span class="star">★</span> Priority support</div>
+            <div class="plan-feature"><span class="star">★</span> Billed through Atlassian Marketplace</div>
+            <div class="plan-feature"><span class="star">★</span> License managed by your Jira admin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:16px;">
+        <span>&#8505;</span>
+        <p>
+          Licensing is handled automatically by Atlassian. Once you have an active Marketplace license,
+          the 15-participant cap is removed. No configuration required — the app detects your license status on each request.
+        </p>
+      </div>
+
+      <h3>How Licensing Works</h3>
+      <table>
+        <thead>
+          <tr><th>Install Type</th><th>Participant Limit</th><th>License Check</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Free (no license)</td>
+            <td>Up to 15 per session</td>
+            <td>The 16th joiner sees an upgrade prompt and cannot vote</td>
+          </tr>
+          <tr>
+            <td>Pro (active Marketplace license)</td>
+            <td>Unlimited</td>
+            <td>Atlassian passes <code>license.isActive = true</code> to the app on every request</td>
+          </tr>
+          <tr>
+            <td>Evaluation / trial</td>
+            <td>Unlimited during trial</td>
+            <td>Same as Pro — trial license is treated as active</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <!-- Setup Guide -->
     <section class="section" id="setup">
       <h2>&#128295; Setup Guide</h2>
-      <p>Follow these steps to install and configure Planning Poker for Jira on your Jira Cloud site.</p>
+      <p>Follow these steps to install Planning Poker for Jira on your Jira Cloud site.</p>
 
       <div class="steps">
         <div class="step">
@@ -431,15 +684,15 @@
             <h3>Install from the Atlassian Marketplace</h3>
             <p>
               Go to <strong>Jira → Apps → Explore more apps</strong> and search for
-              <strong>"Planning Poker for Jira"</strong>. Click <strong>Get app</strong> and
-              follow the prompts. You must be a <strong>Jira site administrator</strong> to install apps.
+              <strong>"Planning Poker for Jira"</strong>. Click <strong>Get app</strong>.
+              You must be a <strong>Jira site administrator</strong> to install apps.
             </p>
             <div class="screenshot-label">
-              &#128247; <span><strong>Where to find it:</strong> Jira top navigation → Apps (9-dot grid) → Explore more apps → search "Planning Poker for Jira"</span>
+              &#128247; <span><strong>Where to find it:</strong> Jira top nav → Apps (9-dot grid) → Explore more apps → search "Planning Poker for Jira"</span>
             </div>
             <div class="callout callout--info">
               <span>&#8505;</span>
-              <p>The app requires the <code>read:jira-work</code>, <code>write:jira-work</code>, and <code>read:jira-user</code> scopes. These are shown during installation and allow the app to read issue data, update story points, and display participant names.</p>
+              <p>The app requests <code>read:jira-work</code>, <code>write:jira-work</code>, and <code>read:jira-user</code> scopes. These are shown during installation and allow the app to read issue data, update story points, and show participant names.</p>
             </div>
           </div>
         </div>
@@ -448,23 +701,12 @@
           <div class="step-num"></div>
           <div class="step-body">
             <h3>Enable the Story Points field (if not already active)</h3>
-            <p>
-              The app writes directly to Jira's Story Points field. If your project doesn't show
-              story points, you need to add the field to the issue screen.
-            </p>
-            <p><strong>For Company-managed (classic) projects:</strong></p>
-            <p>
-              Go to <strong>Jira Settings → Issues → Screens</strong>, find the screen used by your
-              project, and add the <strong>Story Points</strong> field (or <strong>Story point estimate</strong>).
-            </p>
-            <p><strong>For Team-managed (next-gen) projects:</strong></p>
-            <p>
-              Open a project issue → click the <strong>+</strong> icon in the right panel → add
-              <strong>Story points</strong>.
-            </p>
+            <p>The app writes directly to the Jira Story Points field. If your project doesn't show story points, you need to add it to the issue screen.</p>
+            <p><strong>Company-managed (classic) projects:</strong> Go to <strong>Jira Settings → Issues → Screens</strong>, find your project's screen, and add the <strong>Story Points</strong> field.</p>
+            <p><strong>Team-managed (next-gen) projects:</strong> Open any issue → click <strong>+</strong> in the right panel → add <strong>Story points</strong>.</p>
             <div class="callout callout--warn">
               <span>&#9888;</span>
-              <p>If you try to set story points on a project where the field hasn't been added to the screen, you'll see: <em>"This issue type does not support story points."</em></p>
+              <p>If you try to set story points on a project where the field hasn't been added, you'll see: <em>"This issue type does not support story points."</em></p>
             </div>
           </div>
         </div>
@@ -473,23 +715,21 @@
           <div class="step-num"></div>
           <div class="step-body">
             <h3>Open a Jira issue to start using the app</h3>
-            <p>
-              Once installed, open any Jira issue. You will see two entry points:
-            </p>
+            <p>Once installed, open any Jira issue. You'll see two entry points:</p>
             <table>
               <thead>
                 <tr><th>Entry Point</th><th>Location</th><th>Best For</th></tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Estimate Story Points</strong> (sidebar)</td>
-                  <td>Right-hand sidebar of any issue</td>
+                  <td><strong>🃏 Estimate Story Points</strong></td>
+                  <td>Right-hand sidebar</td>
                   <td>Quick access while browsing issues</td>
                 </tr>
                 <tr>
                   <td><strong>Agile Effort Estimation</strong> (panel)</td>
                   <td>Bottom panel (above Activity)</td>
-                  <td>Full-width estimation view</td>
+                  <td>Full-width session view for the whole team</td>
                 </tr>
               </tbody>
             </table>
@@ -512,14 +752,28 @@
           <div class="step-body">
             <h3>Start a session (Moderator)</h3>
             <p>
-              Open a Jira issue and click <strong>&#9654; Start Session</strong>.
-              You become the <strong>moderator</strong> of this session — only you can reveal votes,
-              reset rounds, change the deck, and end the session.
+              Open a Jira issue and click <strong>▶ Start Estimation Session</strong>.
+              Select a voting deck and optionally enable <strong>Auto-reveal</strong>.
+              You become the <strong>moderator</strong> — only you can reveal, reset, change the deck, and end the session.
             </p>
-            <div class="screen-mock">
-              <div class="screen-mock-header">App appearance — no active session</div>
-              <p style="color:#44546F;font-size:13px;">&#128203; Ready to estimate?<br>Start a Planning Poker session for this issue so your team can vote on effort without leaving Jira.</p>
-              <p style="margin-top:8px;"><span style="background:#0C66E4;color:white;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;">&#9654; Start Session</span></p>
+            <div class="ui-mock">
+              <div class="ui-mock-header">
+                <img src="app-icon.png" alt="" style="width:18px;height:18px;border-radius:3px;object-fit:contain;" />
+                Planning Poker
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                <div style="border:1.5px solid var(--navy);border-radius:7px;padding:9px;background:#edf3f6;">
+                  <div style="font-size:16px;margin-bottom:4px;">🔢</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--navy);">Fibonacci</div>
+                  <div style="font-size:10px;color:var(--text-muted);font-family:monospace;">1 · 2 · 3 · 5 · 8…</div>
+                </div>
+                <div style="border:1.5px solid var(--border);border-radius:7px;padding:9px;background:white;">
+                  <div style="font-size:16px;margin-bottom:4px;">👕</div>
+                  <div style="font-size:12px;font-weight:700;color:var(--navy);">T-Shirt</div>
+                  <div style="font-size:10px;color:var(--text-muted);font-family:monospace;">XS · S · M · L…</div>
+                </div>
+              </div>
+              <span class="btn-mock btn-sky btn-full" style="display:block;text-align:center;">▶ Start Estimation Session</span>
             </div>
           </div>
         </div>
@@ -529,24 +783,57 @@
           <div class="step-body">
             <h3>Team members join and vote</h3>
             <p>
-              Team members open the <strong>same Jira issue</strong> and are automatically added
-              to the session. Each person selects a card from the voting deck.
+              Team members open the <strong>same Jira issue</strong> and are automatically added to the session. Each person selects a card. Votes are <strong>hidden</strong> until the moderator reveals them.
             </p>
+            <div class="ui-mock">
+              <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:6px;">Your Vote</p>
+              <div class="card-row">
+                <div class="mock-card">1</div>
+                <div class="mock-card">2</div>
+                <div class="mock-card selected">5</div>
+                <div class="mock-card">8</div>
+                <div class="mock-card">13</div>
+                <div class="mock-card">21</div>
+                <div class="mock-card">?</div>
+              </div>
+              <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Card 5 selected (tap another card to change your vote before reveal)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Track who has voted</h3>
             <p>
-              Votes are <strong>hidden</strong> until the facilitator reveals them — this prevents
-              anchoring, where people change their vote to match others.
+              The <strong>Team</strong> section shows every participant with a green ✓ (voted) or grey … (not yet voted). The progress bar updates in real time.
+              As moderator, click <strong>👋 Nudge</strong> next to any non-voter to post a Jira @mention comment.
             </p>
-            <div class="screen-mock">
-              <div class="screen-mock-header">Voting cards (Fibonacci deck)</div>
-              <p style="font-size:12px;color:#44546F;">Click a card to cast your vote:</p>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
-                <span style="border:2px solid #0C66E4;background:#E9F2FF;color:#0C66E4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;">1</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">2</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">3</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">5</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">8</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">13</span>
-                <span style="border:1px solid #DCDFE4;padding:8px 10px;border-radius:6px;font-weight:700;font-size:14px;color:#172B4D;">?</span>
+            <div class="ui-mock">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin:0;">Team</p>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="width:60px;height:5px;background:var(--bg);border-radius:99px;overflow:hidden;">
+                    <div style="width:66%;height:100%;background:linear-gradient(90deg,var(--sky),var(--mint));border-radius:99px;"></div>
+                  </div>
+                  <span style="font-size:11px;font-weight:700;color:var(--text-sub);">2/3</span>
+                </div>
+              </div>
+              <div class="participant-mock voted">
+                <div class="avatar-mock" style="background:#5cc3e8;">A</div>
+                <span style="font-size:12px;font-weight:500;">Alice</span>
+                <span class="vote-pill-mock pill-voted">✓</span>
+              </div>
+              <div class="participant-mock voted">
+                <div class="avatar-mock" style="background:#79ceb8;">B</div>
+                <span style="font-size:12px;font-weight:500;">Bob</span>
+                <span class="vote-pill-mock pill-voted">✓</span>
+              </div>
+              <div class="participant-mock">
+                <div class="avatar-mock" style="background:#e95f5c;">C</div>
+                <span style="font-size:12px;font-weight:500;">Charlie</span>
+                <span class="vote-pill-mock pill-waiting">…</span>
+                <span style="font-size:13px;margin-left:4px;opacity:.6;">👋</span>
               </div>
             </div>
           </div>
@@ -555,32 +842,38 @@
         <div class="step">
           <div class="step-num"></div>
           <div class="step-body">
-            <h3>Monitor who has voted (Team panel)</h3>
-            <p>
-              The <strong>Team</strong> section shows every participant with a green checkmark
-              (voted) or grey waiting indicator (not yet voted). The progress bar updates in real time.
-            </p>
-            <p>
-              As the moderator, you can click the <strong>&#128276; Nudge</strong> button next to
-              any participant who hasn't voted — this posts a Jira comment @mentioning them.
-            </p>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-num"></div>
-          <div class="step-body">
-            <h3>Reveal votes (Moderator)</h3>
-            <p>
-              Click <strong>&#128065; Reveal Votes</strong> to show all votes simultaneously.
-              The Results section displays:
-            </p>
-            <ul style="font-size:13px;color:#44546F;padding-left:20px;margin:8px 0;">
-              <li>A vote distribution bar chart</li>
-              <li><strong>Average</strong> — mean of all numeric votes</li>
-              <li><strong>Median</strong> — middle value</li>
-              <li><strong>Consensus</strong> — the most common vote (highlighted)</li>
-            </ul>
+            <h3>Reveal votes and review results</h3>
+            <p>Click <strong>👁 Reveal Votes</strong>. All votes appear simultaneously with a distribution bar chart, plus Average, Median, and Consensus statistics.</p>
+            <div class="ui-mock">
+              <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:8px;">Results</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span style="min-width:26px;text-align:right;font-size:12px;font-weight:700;color:var(--navy);">5</span>
+                <div style="flex:1;height:8px;background:var(--bg);border-radius:99px;overflow:hidden;"><div style="width:66%;height:100%;background:linear-gradient(90deg,var(--sky),var(--mint));border-radius:99px;"></div></div>
+                <span style="font-size:11px;color:var(--text-muted);">2×</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                <span style="min-width:26px;text-align:right;font-size:12px;font-weight:700;color:var(--navy);">8</span>
+                <div style="flex:1;height:8px;background:var(--bg);border-radius:99px;overflow:hidden;"><div style="width:33%;height:100%;background:linear-gradient(90deg,var(--sky),var(--mint));border-radius:99px;"></div></div>
+                <span style="font-size:11px;color:var(--text-muted);">1×</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;">
+                  <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-muted);">Average</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--navy);">6</div>
+                </div>
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;">
+                  <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-muted);">Median</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--navy);">5</div>
+                </div>
+                <div style="background:var(--sunshine-subtle);border:2px solid var(--sunshine-bd);border-top:2px solid var(--sunshine);border-radius:7px;padding:7px;text-align:center;">
+                  <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-muted);">Consensus</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--navy);">5</div>
+                </div>
+              </div>
+              <div style="margin-top:10px;">
+                <span class="btn-mock btn-sky btn-full" style="display:block;text-align:center;">&#128204; Set Story Points → 5 SP</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -589,16 +882,12 @@
           <div class="step-body">
             <h3>Set Story Points or start a new round</h3>
             <p>
-              Click <span style="background:#0C66E4;color:white;padding:2px 8px;border-radius:3px;font-size:12px;">&#128204; Set Story Points → X SP</span>
-              to write the consensus value directly to the Jira issue's Story Points field.
-            </p>
-            <p>
-              If the team disagrees and needs another round, click <strong>&#128260; New Round</strong>
-              to reset votes and vote again.
+              Click <strong>📌 Set Story Points → X SP</strong> to write the consensus value to the Jira ticket's Story Points field.
+              If the team disagrees, click <strong>🔄 New Round</strong> to reset and vote again.
             </p>
             <div class="callout callout--success">
               <span>&#10003;</span>
-              <p>Once story points are saved, a green confirmation appears and the button is disabled to prevent accidental double-saves.</p>
+              <p>Once story points are saved, a green ✓ confirmation appears and the button is disabled to prevent accidental double-saves.</p>
             </div>
           </div>
         </div>
@@ -608,63 +897,118 @@
     <!-- Voting Decks -->
     <section class="section" id="decks">
       <h2>&#127183; Voting Decks</h2>
-      <p>The moderator can change the deck at any time by clicking the deck badge in the session header.</p>
+      <p>The moderator can switch decks at any time by clicking the deck badge in the session header. <em>Switching resets all current votes.</em></p>
       <table>
         <thead>
           <tr><th>Deck</th><th>Values</th><th>Best For</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Fibonacci</strong> (default)</td>
-            <td><code>0 1 2 3 5 8 13 21 34 ? &#9749;</code></td>
+            <td><strong>🔢 Fibonacci</strong> (default)</td>
+            <td><code>0 1 2 3 5 8 13 21 ? ☕</code></td>
             <td>Most teams — reflects natural uncertainty at larger sizes</td>
           </tr>
           <tr>
-            <td><strong>T-shirt Sizes</strong></td>
-            <td><code>XS S M L XL XXL</code></td>
-            <td>Teams new to estimation; maps to numeric points automatically</td>
+            <td><strong>👕 T-shirt Sizes</strong></td>
+            <td><code>XS S M L XL XXL ?</code></td>
+            <td>Teams new to estimation; maps to numeric story points automatically</td>
           </tr>
           <tr>
-            <td><strong>Powers of 2</strong></td>
-            <td><code>1 2 4 8 16 32 64</code></td>
+            <td><strong>2ⁿ Powers of 2</strong></td>
+            <td><code>1 2 4 8 16 32 ?</code></td>
             <td>Technical teams who think in doubling increments</td>
           </tr>
           <tr>
-            <td><strong>Sequential</strong></td>
-            <td><code>1 2 3 4 5 6 7 8 9 10</code></td>
+            <td><strong>🔟 Sequential</strong></td>
+            <td><code>1 2 3 4 5 6 7 8 9 10 ?</code></td>
             <td>Simple linear scale for straightforward tasks</td>
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <!-- T-shirt Customization -->
+    <section class="section" id="tshirt">
+      <h2>&#128395; Customizing T-shirt Point Values</h2>
+      <p>
+        When using the <strong>T-shirt deck</strong>, each size (XS, S, M, L, XL, XXL) is automatically
+        converted to a numeric story-point value when you click <em>Set Story Points</em>.
+        The default mapping is a Fibonacci-inspired scale, but you can customize it to match your team's convention.
+      </p>
+
+      <h3>Default mapping</h3>
+      <table>
+        <thead>
+          <tr><th>T-shirt Size</th><th>Default Story Points</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>XS — Extra Small</td><td>1</td></tr>
+          <tr><td>S — Small</td><td>2</td></tr>
+          <tr><td>M — Medium</td><td>3</td></tr>
+          <tr><td>L — Large</td><td>5</td></tr>
+          <tr><td>XL — Extra Large</td><td>8</td></tr>
+          <tr><td>XXL — Double Extra Large</td><td>13</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How to customize</h3>
+      <div class="steps" style="margin-top:8px;">
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>Before a session (Setup view)</h3>
+            <p>Select the <strong>T-Shirt</strong> deck on the setup screen. A <strong>⚙ Customize point values</strong> panel appears below the options. Expand it, edit the values, and click <strong>💾 Save Mapping</strong> before you start the session.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num"></div>
+          <div class="step-body">
+            <h3>After reveal (Results view)</h3>
+            <p>Once votes are revealed, a <strong>⚙ Customize point values</strong> collapsible panel appears below the Set Story Points button. You can adjust the mapping and save it before clicking Set Story Points.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="callout callout--info">
         <span>&#8505;</span>
-        <p>When using the T-shirt deck, <strong>Set Story Points</strong> automatically converts the winning size to a numeric value: XS=1, S=2, M=3, L=5, XL=8, XXL=13.</p>
+        <p>
+          Mappings are saved <strong>per user</strong> to your Atlassian account via Forge Storage.
+          Your custom values persist across sessions and Jira sites. Other team members keep their own settings independently.
+        </p>
+      </div>
+
+      <div class="ui-mock" style="margin-top:12px;max-width:320px;">
+        <div style="border:1px solid var(--border);border-radius:7px;overflow:hidden;">
+          <div style="background:var(--bg);padding:7px 10px;font-size:11px;font-weight:600;color:var(--text-sub);">▶ ⚙ Customize point values</div>
+          <div style="background:white;padding:10px;border-top:1px solid var(--border);">
+            <p style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Map each T-shirt size to a story-point value.</p>
+            <div style="display:grid;grid-template-columns:32px 18px 60px 22px;gap:4px;align-items:center;font-size:12px;">
+              <span style="font-weight:700;text-align:right;color:var(--navy);">XS</span><span style="color:var(--text-muted);text-align:center;">→</span><input type="number" value="1" style="width:100%;padding:4px;border:1.5px solid var(--sky);border-radius:5px;font-size:12px;font-weight:700;text-align:center;color:var(--navy);"><span style="font-size:10px;color:var(--text-muted);">SP</span>
+              <span style="font-weight:700;text-align:right;color:var(--navy);">M</span><span style="color:var(--text-muted);text-align:center;">→</span><input type="number" value="5" style="width:100%;padding:4px;border:1.5px solid var(--border);border-radius:5px;font-size:12px;font-weight:700;text-align:center;color:var(--navy);"><span style="font-size:10px;color:var(--text-muted);">SP</span>
+              <span style="font-weight:700;text-align:right;color:var(--navy);">XL</span><span style="color:var(--text-muted);text-align:center;">→</span><input type="number" value="20" style="width:100%;padding:4px;border:1.5px solid var(--border);border-radius:5px;font-size:12px;font-weight:700;text-align:center;color:var(--navy);"><span style="font-size:10px;color:var(--text-muted);">SP</span>
+            </div>
+            <div style="margin-top:10px;">
+              <span class="btn-mock btn-sky" style="font-size:11px;display:block;text-align:center;padding:5px;">💾 Save Mapping</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Story Points -->
     <section class="section" id="story-points">
       <h2>&#128204; Story Points Configuration</h2>
-      <p>
-        The app tries two common Jira field IDs for Story Points automatically — no configuration needed
-        for most projects:
-      </p>
+      <p>The app tries two common Jira field IDs automatically — no configuration needed for most projects:</p>
       <table>
         <thead>
           <tr><th>Project Type</th><th>Field ID Used</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Team-managed (next-gen)</td>
-            <td><code>story_points</code></td>
-          </tr>
-          <tr>
-            <td>Company-managed (classic)</td>
-            <td><code>customfield_10016</code></td>
-          </tr>
+          <tr><td>Team-managed (next-gen)</td><td><code>story_points</code></td></tr>
+          <tr><td>Company-managed (classic)</td><td><code>customfield_10016</code></td></tr>
         </tbody>
       </table>
-      <p>The app tries <code>story_points</code> first, then falls back to <code>customfield_10016</code>. If both fail, it means the Story Points field hasn't been added to your project's screen scheme — see <a href="#setup">Setup Step 2</a>.</p>
+      <p>The app tries <code>story_points</code> first, then falls back to <code>customfield_10016</code>. If both fail, the Story Points field hasn't been added to your project's screen — see <a href="#setup">Setup Step 2</a>.</p>
     </section>
 
     <!-- Permissions -->
@@ -685,17 +1029,17 @@
           </tr>
           <tr>
             <td><code>read:jira-user</code></td>
-            <td>Fetch participant display names to show in the Team section</td>
+            <td>Fetch participant display names for the Team section</td>
           </tr>
           <tr>
             <td><code>storage:app</code></td>
-            <td>Store session data (votes, participants) in Forge's encrypted key-value store</td>
+            <td>Store session data (votes, participants, T-shirt mappings) in Forge's encrypted key-value store</td>
           </tr>
         </tbody>
       </table>
       <div class="callout callout--success">
         <span>&#128274;</span>
-        <p><strong>Privacy:</strong> No data is sent to external servers. All session data lives in Atlassian's Forge Storage and is automatically deleted when the session is ended.</p>
+        <p><strong>Privacy:</strong> No data is sent to external servers. All session data lives in Atlassian's Forge Storage and is automatically deleted when the moderator ends the session.</p>
       </div>
     </section>
 
@@ -703,39 +1047,49 @@
     <section class="section" id="faq">
       <h2>&#10067; Frequently Asked Questions</h2>
 
-      <details open>
+      <details class="faq" open>
         <summary>Who becomes the moderator?</summary>
         <p>The first person to click <strong>Start Session</strong> on a Jira issue becomes the moderator. Only the moderator can reveal votes, reset rounds, change the deck, and end the session.</p>
       </details>
 
-      <details>
-        <summary>Can multiple people start sessions on different issues simultaneously?</summary>
-        <p>Yes — sessions are independent per Jira issue. Each issue has its own separate session state.</p>
-      </details>
-
-      <details>
-        <summary>What happens if the moderator leaves?</summary>
-        <p>The session continues and other participants can still vote. However, only the moderator can reveal or reset. If the moderator is unavailable, the session can be ended by refreshing the page and starting a new session (the old data is overwritten).</p>
-      </details>
-
-      <details>
-        <summary>Can I change my vote before reveal?</summary>
-        <p>Yes — you can click a different card at any time before the moderator clicks Reveal. Your vote updates immediately.</p>
-      </details>
-
-      <details>
-        <summary>Why doesn't "Set Story Points" work?</summary>
-        <p>The Story Points field must be added to your project's screen. See <a href="#setup">Setup Step 2</a>. This is a Jira project configuration, not an app setting.</p>
-      </details>
-
-      <details>
-        <summary>The app shows a blank panel — what do I do?</summary>
-        <p>Press <strong>Cmd+Shift+R</strong> (Mac) or <strong>Ctrl+Shift+R</strong> (Windows) to hard-refresh the page. If the issue persists, try opening the issue in an Incognito/Private browser window.</p>
-      </details>
-
-      <details>
+      <details class="faq">
         <summary>How many people can join a session?</summary>
-        <p>The free plan supports up to <strong>20 participants</strong> per session. If your team exceeds 20, the 21st participant will see an upgrade prompt.</p>
+        <p>The <strong>Free plan</strong> supports up to <strong>15 participants</strong> per session. The 16th participant will see an upgrade prompt. With a <strong>Pro license</strong> (purchased via Atlassian Marketplace), there is no participant limit.</p>
+      </details>
+
+      <details class="faq">
+        <summary>What's included in the Pro plan?</summary>
+        <p>Pro removes the 15-participant cap and unlocks unlimited participants per session. All other features (all decks, auto-reveal, nudge, T-shirt mapping, story point save) are available on the Free plan. Licensing is managed entirely through the Atlassian Marketplace — no additional accounts needed.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Can multiple issues have active sessions simultaneously?</summary>
+        <p>Yes — sessions are independent per Jira issue. Each issue has its own separate session state and participant list.</p>
+      </details>
+
+      <details class="faq">
+        <summary>What happens if the moderator leaves?</summary>
+        <p>Participants can still vote, but only the moderator can reveal or reset. If the moderator is unavailable, a Jira admin can start a new session on the same issue — the old data is overwritten.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Can I change my vote before reveal?</summary>
+        <p>Yes — tap a different card at any time before the moderator clicks Reveal. Your vote updates immediately.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Why doesn't "Set Story Points" work?</summary>
+        <p>The Story Points field must be added to your project's screen. See <a href="#setup">Setup Step 2</a>. If the field is present but you get a permission error, ensure the user clicking the button has edit rights on the issue.</p>
+      </details>
+
+      <details class="faq">
+        <summary>The app shows a blank panel — what do I do?</summary>
+        <p>Press <strong>Cmd+Shift+R</strong> (Mac) or <strong>Ctrl+Shift+R</strong> (Windows) to hard-refresh the page. If the issue persists, open the issue in an Incognito/Private window.</p>
+      </details>
+
+      <details class="faq">
+        <summary>Does my custom T-shirt mapping apply to everyone on my team?</summary>
+        <p>No — T-shirt mappings are personal. Each user saves their own mapping, and it's applied when they click "Set Story Points". This gives each user flexibility without affecting teammates.</p>
       </details>
     </section>
 
@@ -744,12 +1098,12 @@
       <h2>&#128225; Support</h2>
       <p>Found a bug or have a feature request? Open an issue on GitHub:</p>
       <p>
-        <a href="https://github.com/fineanmol/jira-poker/issues" style="color:var(--blue);font-weight:600;" target="_blank" rel="noopener">
+        <a href="https://github.com/fineanmol/jira-poker/issues" style="color:var(--sky);font-weight:600;" target="_blank" rel="noopener">
           &#128030; github.com/fineanmol/jira-poker/issues ↗
         </a>
       </p>
       <p style="margin-top:12px;">
-        <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" style="color:var(--blue);" target="_blank" rel="noopener">Privacy Policy ↗</a>
+        <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" style="color:var(--sky);" target="_blank" rel="noopener">Privacy Policy ↗</a>
       </p>
     </section>
 
@@ -757,7 +1111,12 @@
 </div>
 
 <footer>
-  <p>Planning Poker for Jira &mdash; Built on <a href="https://developer.atlassian.com/platform/forge/" target="_blank" rel="noopener">Atlassian Forge</a> &middot; <a href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" target="_blank" rel="noopener">Privacy Policy</a></p>
+  <p>
+    Planning Poker for Jira &mdash;
+    Built on <a href="https://developer.atlassian.com/platform/forge/" target="_blank" rel="noopener">Atlassian Forge</a>
+    &middot; <a href="https://github.com/fineanmol/jira-poker" target="_blank" rel="noopener">GitHub</a>
+    &middot; <a href="https://gist.github.com/fineanmol/933ce3fb094d6c946f39d1dc62085db3" target="_blank" rel="noopener">Privacy Policy</a>
+  </p>
 </footer>
 
 </body>

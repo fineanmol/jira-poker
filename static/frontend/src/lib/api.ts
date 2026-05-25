@@ -8,7 +8,7 @@
  */
 
 import { bridgeInvoke, getContext, jiraGet } from './bridge';
-import type { Session, DeckType, ForgeContext } from '../types';
+import type { Session, DeckType, ForgeContext, TshirtMapping } from '../types';
 
 /**
  * Fetch the current user's display name directly from Jira via the Forge bridge.
@@ -91,4 +91,11 @@ export const api = {
 
   setStoryPoints: (issueId: string, points: number | string): Promise<SetPointsResult> =>
     bridgeInvoke<SetPointsResult>('setStoryPoints', { issueId, points }),
+
+  // ── T-shirt mapping ───────────────────────────────────────────────────────
+  getTshirtMapping: (): Promise<TshirtMapping> =>
+    bridgeInvoke<TshirtMapping>('getTshirtMapping', {}),
+
+  setTshirtMapping: (mapping: TshirtMapping): Promise<{ saved: boolean; mapping: TshirtMapping }> =>
+    bridgeInvoke<{ saved: boolean; mapping: TshirtMapping }>('setTshirtMapping', { mapping }),
 };

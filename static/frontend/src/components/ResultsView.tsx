@@ -1,5 +1,5 @@
-import type { Session, EstimationResults } from '../types';
-import { DECKS } from '../types';
+import type { Session, EstimationResults, TshirtMapping } from '../types';
+import { TshirtCustomizer } from './TshirtCustomizer';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -39,26 +39,31 @@ function StatCard({
 // ─── Public component ─────────────────────────────────────────────────────────
 
 interface ResultsViewProps {
-  session:         Session;
-  results:         EstimationResults;
-  suggestedPoints: number | string | null;
-  storyPointsSet:  boolean;
-  actionLoading:   boolean;
-  onSetPoints:     (points: number | string) => void;
+  session:             Session;
+  results:             EstimationResults;
+  suggestedPoints:     number | string | null;
+  storyPointsSet:      boolean;
+  actionLoading:       boolean;
+  onSetPoints:         (points: number | string) => void;
+  tshirtMapping?:      TshirtMapping;
+  savingTshirtMapping?: boolean;
+  onSaveTshirtMapping?: (mapping: TshirtMapping) => Promise<void>;
 }
 
 export function ResultsView({
   session, results, suggestedPoints, storyPointsSet, actionLoading, onSetPoints,
+  tshirtMapping, savingTshirtMapping, onSaveTshirtMapping,
 }: ResultsViewProps) {
   // Build the label for the "Set Story Points" button
   const setPointsLabel = (() => {
     if (!suggestedPoints) return null;
     if (session.deck === 'tshirt' && results.distribution.length > 0) {
       const topValue = String(results.distribution[0].value);
-      const mapped   = DECKS.tshirt.toPoints?.[topValue];
-      return mapped
+      // Use the user's saved custom mapping (tshirtMapping prop), not the hardcoded default
+      const mapped = tshirtMapping?.[topValue as keyof typeof tshirtMapping];
+      return mapped !== undefined
         ? `${topValue} = ${mapped} SP`
-        : String(suggestedPoints);
+        : topValue;
     }
     return `${suggestedPoints} SP`;
   })();
@@ -98,6 +103,15 @@ export function ResultsView({
             ? `✓ Set — ${setPointsLabel}`
             : `📌 Set Story Points → ${setPointsLabel}`}
         </button>
+      )}
+
+      {/* T-shirt mapping customizer */}
+      {session.deck === 'tshirt' && tshirtMapping && onSaveTshirtMapping && (
+        <TshirtCustomizer
+          mapping={tshirtMapping}
+          saving={savingTshirtMapping ?? false}
+          onSave={onSaveTshirtMapping}
+        />
       )}
     </section>
   );

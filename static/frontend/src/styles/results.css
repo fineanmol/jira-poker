@@ -1,0 +1,109 @@
+/* ================================================================
+   results.css — Results view: distribution bars + stat cards
+   ================================================================ */
+
+/* ── Container ──────────────────────────────────────────────── */
+.results-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── Distribution bars ──────────────────────────────────────── */
+.distribution-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.distribution-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.distribution-bar__label {
+  min-width: 26px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.distribution-bar__track {
+  flex: 1;
+  height: 8px;
+  background: var(--clr-bg);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: 1px solid var(--clr-border);
+}
+
+.distribution-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--sky) 0%, var(--mint) 100%);
+  border-radius: var(--radius-pill);
+  transition: width .55s var(--ease-smooth);
+  min-width: 4px;
+}
+
+.distribution-bar__count {
+  min-width: 22px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Stat cards row ─────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.stat-card {
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: 8px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+/* Consensus — highlighted with sunshine */
+.stat-card--highlight {
+  background: var(--sunshine-subtle);
+  border-color: var(--sunshine-bd);
+  border-top: 2px solid var(--sunshine);
+}
+
+.stat-card__label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.stat-card__value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.03em;
+}
+
+.stat-card--highlight .stat-card__value {
+  color: var(--navy);
+}

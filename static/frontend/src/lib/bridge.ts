@@ -5,7 +5,8 @@
  * Atlassian CDN — never localhost. IS_DEV_MOCK is true only in local browser dev.
  */
 
-import type { Session, DeckType, ForgeContext } from '../types';
+import type { Session, DeckType, ForgeContext, TshirtMapping } from '../types';
+import { DEFAULT_TSHIRT_MAPPING } from '../types';
 
 // ─── Runtime detection ────────────────────────────────────────────────────────
 
@@ -53,6 +54,7 @@ const MOCK_ISSUE_ID = 'DEV-1';
 const MOCK_ISSUE_KEY = 'DEV-1';
 
 let mockSession: Session | null = null;
+let mockTshirtMapping: TshirtMapping = { ...DEFAULT_TSHIRT_MAPPING };
 
 function mockGetContext(): ForgeContext {
   return {
@@ -144,6 +146,20 @@ function mockInvoke(fn: string, payload?: unknown): unknown {
     case 'deleteSession':
       mockSession = null;
       return { deleted: true };
+
+    case 'getTshirtMapping':
+      return { ...mockTshirtMapping };
+
+    case 'setTshirtMapping': {
+      const mapping = p.mapping as TshirtMapping;
+      // Mirror the backend validation: all values must be positive numbers
+      const isValid = Object.values(mapping).every(
+        (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+      );
+      if (!isValid) throw new Error('Invalid mapping: all story-point values must be positive numbers.');
+      mockTshirtMapping = { ...mapping };
+      return { saved: true, mapping: { ...mockTshirtMapping } };
+    }
 
     default:
       throw new Error(`Unknown mock function: ${fn}`);

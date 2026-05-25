@@ -1,0 +1,114 @@
+/* ================================================================
+   banners.css — Dev banner, error banner, toast, upgrade banner
+   ================================================================ */
+
+/* ── Dev mode ──────────────────────────────────────────────── */
+.dev-banner {
+  background: var(--sunshine-subtle);
+  color: var(--navy);
+  border: 1px solid var(--sunshine-bd);
+  border-left: 3px solid var(--sunshine);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ── Error ─────────────────────────────────────────────────── */
+.error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--coral-subtle);
+  border: 1px solid var(--coral-bd);
+  border-left: 3px solid var(--coral);
+  border-radius: var(--radius-sm);
+  padding: 9px 10px;
+  font-size: 12px;
+  color: var(--coral-dark);
+  line-height: 1.5;
+}
+
+.error-banner__close {
+  color: var(--coral);
+  padding: 1px 5px;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+  border-radius: var(--radius-xs);
+  transition: background var(--transition);
+}
+.error-banner__close:hover { background: var(--coral-bd); }
+
+/* ── Toast ─────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  color: white;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: var(--shadow-navy);
+  animation: toast-in 0.2s var(--ease-spring);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px) scale(.95); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)     scale(1); }
+}
+
+/* ── Upgrade / free-tier ───────────────────────────────────── */
+.upgrade-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--sunshine-subtle);
+  border: 1px solid var(--sunshine-bd);
+  border-left: 3px solid var(--sunshine);
+  border-radius: var(--radius-sm);
+  padding: 10px 10px 10px 8px;
+}
+
+.upgrade-banner__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.upgrade-banner__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.upgrade-banner__body strong {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+}
+
+.upgrade-banner__body p {
+  font-size: 11px;
+  color: var(--clr-text-sub);
+  line-height: 1.5;
+}
+
+.upgrade-banner__cta {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 11px;
+  padding: 5px 10px;
+  text-decoration: none;
+}
